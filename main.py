@@ -17,11 +17,15 @@ while True:
         except ValueError:
             print("Veuillez entrer une colonne Valide")
 
-    tableau = jouer(entrerJoueur, joueur,tableau)
+    tableau = jouer(entrerJoueur, joueur, tableau)
     os.system('cls')
     print(tableau)
     tour += 1
     if tour >= 7:
         if verification(tableau, joueur):
+            print("Joueur ", joueur, " a gagné !")
+            break
+        elif egalite(tableau):
+            print("Égalité !")
             break
     joueur = (2 if joueur == 1 else 1)

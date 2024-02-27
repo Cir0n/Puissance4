@@ -14,7 +14,6 @@ def verification(tableau, joueur):
         for j in range(tableau.shape[0]):
             if tableau[j, i] == joueur and tableau[j, i + 1] == joueur and tableau[j, i + 2] == joueur and \
                     tableau[j, i + 3] == joueur:
-                print('joueur', joueur, 'a gagné')
                 return True
 
     # Vérifie verticalement si 4 pions sont aligner
@@ -22,7 +21,6 @@ def verification(tableau, joueur):
         for j in range(tableau.shape[0] - 3):
             if tableau[j, i] == joueur and tableau[j + 1, i] == joueur and tableau[j + 2, i] == joueur and \
                     tableau[j + 3, i] == joueur:
-                print('joueur', joueur, 'a gagné')
                 return True
 
     # Vérifie diagonal
@@ -30,7 +28,6 @@ def verification(tableau, joueur):
         for j in range(tableau.shape[0] - 3):
             if tableau[j, i] == joueur and tableau[j + 1, i + 1] == joueur and tableau[j + 2, i + 2] == joueur and \
                     tableau[j + 3, i + 3] == joueur:
-                print('joueur', joueur, 'a gagné')
                 return True
 
     # Vérifie autre diagonal
@@ -38,13 +35,11 @@ def verification(tableau, joueur):
         for j in range(tableau.shape[0] - 3):
             if tableau[j, i] == joueur and tableau[j + 1, i - 1] == joueur and tableau[j + 2, i - 2] == joueur and \
                     tableau[j + 3, i - 3] == joueur:
-                print(f'joueur', joueur, 'a gagné')
                 return True
 
 
 def egalite(tableau):
     if not verification(tableau, 1) and (not verification(tableau, 2)) and tableau.min() != 0:
-        print("Égalité !")
         return True
     return False
 
