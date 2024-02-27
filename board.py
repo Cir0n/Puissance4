@@ -1,4 +1,3 @@
-from tkinter import *
 import numpy as np
 
 b = np.zeros([6, 7])

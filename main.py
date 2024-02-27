@@ -1,4 +1,6 @@
 from board import *
+from affichage import *
+import os
 
 tableau = np.zeros([6, 7])
 joueur = 1
@@ -16,6 +18,7 @@ while True:
             print("Veuillez entrer une colonne Valide")
 
     tableau = jouer(entrerJoueur, joueur,tableau)
+    os.system('cls')
     print(tableau)
     tour += 1
     if tour >= 8:
