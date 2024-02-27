@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a24491f9-aa56-4309-8eb9-a1ffc5640b9d" name="Changes" comment="ajout board">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
-    <list id="2c669a15-c865-4925-bb99-c09ecc6b5068" name="Changes by badvi" comment="Changes by badvi">
       <change beforePath="$PROJECT_DIR$/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/board.py" afterDir="false" />
     </list>
+    <list id="2c669a15-c865-4925-bb99-c09ecc6b5068" name="Changes by badvi" comment="Changes by badvi" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,7 +87,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1708981042257</updated>
-      <workItem from="1708981052475" duration="4643000" />
+      <workItem from="1708981052475" duration="5630000" />
     </task>
     <task id="LOCAL-00001" summary="premier commit">
       <option name="closed" value="true" />
@@ -146,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708982975942</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Changes by badvi">
+      <option name="closed" value="true" />
+      <created>1709018081541</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1709018081541</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,9 +162,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="premier commit" />
     <MESSAGE value="deuxième commit" />
-    <MESSAGE value="Changes by badvi" />
     <MESSAGE value="ajout board" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajout board" />
+    <MESSAGE value="Changes by badvi" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes by badvi" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Puissance4$board.coverage" NAME="board Coverage Results" MODIFIED="1708984857035" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

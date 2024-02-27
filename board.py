@@ -19,6 +19,11 @@ def verification(tableau):
         for j in range(b.shape[0] - 3):
             if b[j][i] == 1 and b[j + 1][i + 1] == 1 and b[j + 2][i + 2] == 1 and b[j + 3][i + 3] == 1:
                 return True
+    #verif autre diagonale
+    for i in range (b.shape[1]-3):
+        for j in range(3, b.shape[0]):
+            if b[]
+
 
 
 
