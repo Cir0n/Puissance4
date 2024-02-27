@@ -75,3 +75,4 @@ def jouer(position_jouer, joueur, tableau):
                 return tableau
         tableau[5, position_jouer] = joueur
         return tableau
+    return tableau

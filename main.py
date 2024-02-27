@@ -21,7 +21,7 @@ while True:
     os.system('cls')
     print(tableau)
     tour += 1
-    if tour >= 8:
-        if verification(tableau, joueur) or egalite(tableau):
+    if tour >= 7:
+        if verification(tableau, joueur):
             break
     joueur = (2 if joueur == 1 else 1)
