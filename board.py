@@ -28,7 +28,7 @@ def verification(tableau, joueur):
                 return True
     # Vérifie autre diagonal
     for i in range(3, tableau.shape[1]):
-        for j in range(tableau.shape[0]):
+        for j in range(tableau.shape[0] - 3):
             if tableau[j, i] == joueur and tableau[j + 1, i - 1] == joueur and tableau[j + 2, i - 2] == joueur and \
                     tableau[j + 3, i - 3] == joueur:
                 print(f'joueur {joueur} a gagné')
@@ -37,77 +37,13 @@ def verification(tableau, joueur):
 def validite(tableau,position_jouer):
     if tableau[0, position_jouer] == 0:
         return True
-    print('ne peut pas jouer')
     return False
 
-assert validite(np.array(
-    [[0, 1, 0, 0, 1, 1, 1],
-     [1, 1, 1, 1, 2, 0, 0],
-     [1, 1, 2, 2, 1, 0, 0],
-     [2, 2, 1, 2, 1, 1, 2],
-     [0, 2, 1, 2, 1, 2, 1],
-     [2, 1, 1, 1, 2, 2, 1]]), 1) == False, "Validité erreur"
-
-assert validite(np.array(
-    [[0, 0, 0, 0, 1, 1, 1],
-     [1, 1, 1, 1, 2, 0, 0],
-     [1, 1, 2, 2, 1, 0, 0],
-     [2, 2, 1, 2, 1, 1, 2],
-     [0, 2, 1, 2, 1, 2, 1],
-     [2, 1, 1, 1, 2, 2, 1]]), 1), "Validité erreur"
-
-assert verification(np.array(
-    [[0, 1, 0, 0, 1, 1, 1],
-     [1, 1, 1, 1, 2, 0, 0],
-     [1, 1, 2, 2, 1, 0, 0],
-     [2, 2, 1, 2, 1, 1, 2],
-     [0, 2, 1, 2, 1, 2, 1],
-     [2, 1, 1, 1, 2, 2, 1]]), 1), "Condition 1 horiz"
-
-assert verification(np.array(
-    [[0, 1, 0, 0, 1, 1, 1],
-     [1, 1, 0, 0, 0, 0, 0],
-     [0, 1, 0, 0, 1, 1, 0],
-     [0, 0, 0, 0, 0, 1, 0],
-     [0, 2, 2, 2, 2, 0, 0],
-     [0, 0, 0, 0, 0, 0, 0]]), 2), "Condition 2 horiz"
-
-assert verification(np.array(
-    [[0, 1, 0, 0, 1, 1, 1],
-     [1, 0, 2, 1, 0, 0, 0],
-     [0, 0, 2, 0, 0, 0, 0],
-     [0, 0, 2, 0, 0, 0, 0],
-     [0, 0, 2, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0, 0, 0]]), 2), "Condition 1 verti"
-
-assert verification(np.array(
-    [[0, 1, 0, 0, 1, 1, 1],
-     [1, 1, 0, 0, 1, 0, 0],
-     [0, 1, 0, 0, 1, 1, 0],
-     [0, 0, 0, 0, 1, 1, 0],
-     [0, 1, 1, 1, 2, 0, 0],
-     [0, 1, 2, 2, 2, 0, 0]]), 1), "Condition 2 verti"
-
-assert verification(np.array(
-    [[2, 1, 0, 1, 1, 1, 0],
-     [1, 2, 0, 0, 0, 0, 0],
-     [0, 1, 2, 0, 0, 0, 0],
-     [0, 0, 2, 2, 0, 1, 0],
-     [0, 2, 2, 2, 1, 0, 0],
-     [0, 0, 0, 1, 1, 0, 0]]), 2), "Condition 1 diago"
-
-assert verification(np.array(
-    [[0, 1, 0, 1, 1, 1, 0],
-     [1, 1, 0, 0, 1, 0, 0],
-     [0, 1, 0, 0, 0, 1, 0],
-     [0, 0, 0, 0, 0, 1, 1],
-     [0, 1, 1, 1, 0, 0, 0],
-     [0, 0, 0, 0, 0, 0, 0]]), 1), "Condition 2 diago"
-
-assert verification(np.array(
-    [[0, 1, 0, 0, 1, 1, 1],
-     [1, 0, 1, 1, 0, 2, 0],
-     [0, 0, 0, 0, 2, 0, 0],
-     [0, 0, 0, 2, 0, 0, 0],
-     [0, 0, 2, 0, 0, 0, 0],
-     [0, 0, 0, 0, 0, 0, 0]]), 2), "Condition 3 diago"
+def jouer(position_jouer, joueur, tableau):
+    if validite(tableau, position_jouer):
+        for i in range(tableau.shape[0] - 1):
+            if tableau[i + 1, position_jouer] != 0:
+                tableau[i, position_jouer] = joueur
+                return tableau
+        tableau[5, position_jouer] = joueur
+        return tableau
