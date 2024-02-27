@@ -6,9 +6,15 @@ tour = 0
 
 
 print(tableau)
-while True :
-    print(f'tour joueur {joueur} : ')
-    entrerJoueur = int(input("entrer colonne : "))
+while True:
+    print('tour joueur', joueur)
+    while True:
+        try:
+            entrerJoueur = int(input("entrer colonne : "))
+            break
+        except ValueError:
+            print("Veuillez entrer une colonne Valide")
+
     tableau = jouer(entrerJoueur, joueur,tableau)
     print(tableau)
     tour += 1
