@@ -22,6 +22,6 @@ while True:
     print(tableau)
     tour += 1
     if tour >= 8:
-        if verification(tableau, joueur):
+        if verification(tableau, joueur) or egalite(tableau):
             break
     joueur = (2 if joueur == 1 else 1)

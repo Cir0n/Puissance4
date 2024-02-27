@@ -42,6 +42,13 @@ def verification(tableau, joueur):
                 return True
 
 
+def egalite(tableau):
+    if not verification(tableau, 1) and (not verification(tableau, 2)) and tableau.min() != 0:
+        print("Égalité !")
+        return True
+    return False
+
+
 def validite(tableau, position_jouer):
     """
     paramètres : tableau numpy de dimensions 6,7; la position à jouer
