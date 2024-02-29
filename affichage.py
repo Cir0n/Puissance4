@@ -4,7 +4,8 @@ import tkinter.font as tkFont
 def buttion_click(btn, row, col):
     print(row,col)
     btn.config()
-
+def on_button_click( col):
+    print(f"Button clicked at column {col}")
 def clear():
     """
     efface tous les slaves de la window
@@ -41,9 +42,7 @@ def affiche_menu():
     quit_button.grid(row=5, column=2, columnspan=1, sticky=EW, pady=35, padx= 40)
 
 
-    window.grid_columnconfigure(1, weight=1)
-    window.grid_columnconfigure(2, weight=1)
-    window.grid_columnconfigure(3, weight=1)
+
 
 def affiche_partie_locale():
     clear()
@@ -63,9 +62,6 @@ def affiche_partie_locale():
                          highlightthickness=0, font=font_style)
     quit_button.grid(row=4, column=2, columnspan=1, sticky=EW, pady=35, padx=40)
 
-    window.grid_columnconfigure(1, weight=1)
-    window.grid_columnconfigure(2, weight=1)
-    window.grid_columnconfigure(3, weight=1)
 
 def affiche_partie_ordi():
     clear()
@@ -91,9 +87,6 @@ def affiche_partie_en_ligne():
                          highlightthickness=0, font=font_style)
     quit_button.grid(row=4, column=2, columnspan=1, sticky=EW, pady=35, padx=40)
 
-    window.grid_columnconfigure(1, weight=1)
-    window.grid_columnconfigure(2, weight=1)
-    window.grid_columnconfigure(3, weight=1)
 
 
 def affiche_creer_en_ligne():
@@ -108,6 +101,8 @@ def affiche_rejoindre_partie_en_ligne():
     title_label.grid()
 
 def jeu_local():
+    clear()
+
     print()
 
 def jeu_ordi():
@@ -122,8 +117,9 @@ window.geometry("1080x720")
 window.minsize(720, 480)
 window.config(background='#7092BE')
 
-
-
+window.grid_columnconfigure(1, weight=1)
+window.grid_columnconfigure(2, weight=1)
+window.grid_columnconfigure(3, weight=1)
 
 affiche_menu()
 # Afficher la fenêtre
