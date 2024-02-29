@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.font as tkFont
+from board import *
 
 
 def buttion_click(btn, row, col):
@@ -130,13 +131,13 @@ def jeu_local():
     clear()
     frame = Frame(window, bg='#7092BE')
     image_vide = PhotoImage(file="image/case_vide.png")
-    buttons = [[None for _ in range(7)] for _ in range(7)]
     for i in range(6):
         for j in range(7):
             button = Button(frame, image=image_vide, width=100, height=102, bg="white", command=lambda col=j: on_button_click(col), bd=0, highlightthickness=0)
             button.image = image_vide
             button.grid(row=i, column=j)
     frame.pack(side=BOTTOM)
+
 
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
@@ -158,6 +159,8 @@ window.config(background='#7092BE')
 window.grid_columnconfigure(1, weight=1)
 window.grid_columnconfigure(2, weight=1)
 window.grid_columnconfigure(3, weight=1)
+
+buttons = [[None for _ in range(7)] for _ in range(7)]
 
 affiche_menu()
 # Afficher la fenêtre
