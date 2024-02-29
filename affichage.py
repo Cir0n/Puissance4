@@ -5,14 +5,6 @@ def buttion_click(btn, row, col):
     print(row,col)
     btn.config()
 
-# Configurations de la fenetre puissance 4
-window = Tk()
-window.title("Puissance 4")
-window.iconbitmap("image/puissance4.ico")
-window.geometry("1080x720")
-window.minsize(720, 480)
-window.config(background='#7092BE')
-
 def clear():
     """
     efface tous les slaves de la window
@@ -120,6 +112,17 @@ def jeu_local():
 
 def jeu_ordi():
     print()
+
+
+# Configurations de la fenetre puissance 4
+window = Tk()
+window.title("Puissance 4")
+window.iconbitmap("image/puissance4.ico")
+window.geometry("1080x720")
+window.minsize(720, 480)
+window.config(background='#7092BE')
+
+
 
 
 affiche_menu()
