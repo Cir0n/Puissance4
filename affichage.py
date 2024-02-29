@@ -3,13 +3,9 @@ import tkinter.font as tkFont
 from board import *
 
 
-def buttion_click(btn, row, col):
-    print(row, col)
-    btn.config()
-
-
 def on_button_click(col):
     print(f"Button clicked at column {col}")
+
 
 
 def clear():
@@ -114,7 +110,8 @@ def affiche_rejoindre_partie_en_ligne():
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid()
 
-def creer_rond(x, y, r, window): #coordonnées, rayon
+
+def creer_rond(x, y, r, window):  # coordonnées, rayon
     x0 = x - r
     y0 = y - r
     x1 = x + r
@@ -122,10 +119,12 @@ def creer_rond(x, y, r, window): #coordonnées, rayon
     rond = window.create_oval(x0, y0, x1, y1)
     return rond
 
+
 def grille():
     window.grid_columnconfigure(1, weight=1)
     window.grid_columnconfigure(2, weight=1)
     window.grid_columnconfigure(3, weight=1)
+
 
 def jeu_local():
     clear()
@@ -138,14 +137,9 @@ def jeu_local():
             button.grid(row=i, column=j)
     frame.pack(side=BOTTOM)
 
-
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
-
-
-
-
 
 
 # Configurations de la fenetre puissance 4
@@ -163,6 +157,7 @@ window.grid_columnconfigure(3, weight=1)
 buttons = [[None for _ in range(7)] for _ in range(7)]
 
 affiche_menu()
+
 # Afficher la fenêtre
 window.mainloop()
 
