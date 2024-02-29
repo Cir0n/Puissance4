@@ -67,7 +67,10 @@ def jouer(joueur, tableau):
     while True:
         try:
             entrerJoueur = int(input("entrer colonne : "))
-            break
+            if 0 <= entrerJoueur <= 6:
+                break
+            else:
+                print("La colonne doit être entre 0 et 6")
         except ValueError:
             print("Veuillez entrer une colonne Valide")
 
