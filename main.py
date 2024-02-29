@@ -18,9 +18,6 @@ affiche_menu(window)
 # Afficher la fenêtre
 window.mainloop()
 
-
-
-
 print(tableau)
 while True:
     print('tour joueur', joueur)
