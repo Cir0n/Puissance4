@@ -39,6 +39,10 @@ def verification(tableau, joueur):
 
 
 def egalite(tableau):
+    """
+    paramètres : tableau numpy de dimensions 6,7
+    renvoie True si aucun des joueurs n'a gagné et que le tableau est plein, cas d'égalité
+    """
     if not verification(tableau, 1) and (not verification(tableau, 2)) and tableau.min() != 0:
         return True
     return False
