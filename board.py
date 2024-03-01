@@ -1,5 +1,4 @@
 import numpy as np
-from affichage import *
 
 tableau = np.zeros([6, 7])
 joueur = 1
