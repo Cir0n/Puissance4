@@ -1,7 +1,9 @@
 import numpy as np
 from affichage import *
 
-b = np.zeros([6, 7])
+tableau = np.zeros([6, 7])
+joueur = 1
+tour = 0
 
 
 def verification(tableau, joueur):
@@ -59,7 +61,7 @@ def validite(tableau, position_jouer):
     return False
 
 
-def jouer(joueur, tableau, entrerJoueur):
+def jouer(tableau, entrerJoueur):
     """
     paramètres : la position à jouer; le joueur actuel; tableau numpy de dimensions 6,7
     renvoie la modification du tableau
@@ -69,13 +71,28 @@ def jouer(joueur, tableau, entrerJoueur):
     regarde toute la colonne jusqu'à trouver un pion d'un joueur et de placer au dessus de celui-ci
     si la boucle ne trouve rien on met le pion en bas de la colonne
     """
-
+    global joueur
+    global tour
     if validite(tableau, entrerJoueur):
-        for i in range(tableau.shape[0] - 1):
-            if tableau[i + 1, entrerJoueur] != 0:
+
+        for i in range(tableau.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
+            if tableau[i, entrerJoueur] == 0:
                 tableau[i, entrerJoueur] = joueur
+                tour += 1
+                if tour >= 7:
+                    if verification(tableau, joueur):
+                        print("Joueur", joueur, "a gagné !")
+                        return tableau
+                    elif egalite(tableau):
+                        print("Égalité !")
+                        return tableau
+                joueur = (2 if joueur == 1 else 1)
                 return tableau
-        tableau[5, entrerJoueur] = joueur
-        colorie_tableau(tableau)
-        print(tableau)
-        return tableau
+        print("colonne pleine")
+    else:
+        print("position invalide")
+    return tableau
+
+
+
+
