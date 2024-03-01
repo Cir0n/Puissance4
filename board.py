@@ -1,4 +1,5 @@
 import numpy as np
+from affichage import *
 
 b = np.zeros([6, 7])
 
@@ -58,7 +59,7 @@ def validite(tableau, position_jouer):
     return False
 
 
-def jouer(joueur, tableau):
+def jouer(joueur, tableau, entrerJoueur):
     """
     paramètres : la position à jouer; le joueur actuel; tableau numpy de dimensions 6,7
     renvoie la modification du tableau
@@ -68,15 +69,6 @@ def jouer(joueur, tableau):
     regarde toute la colonne jusqu'à trouver un pion d'un joueur et de placer au dessus de celui-ci
     si la boucle ne trouve rien on met le pion en bas de la colonne
     """
-    while True:
-        try:
-            entrerJoueur = int(input("entrer colonne : "))
-            if 0 <= entrerJoueur <= 6:
-                break
-            else:
-                print("La colonne doit être entre 0 et 6")
-        except ValueError:
-            print("Veuillez entrer une colonne Valide")
 
     if validite(tableau, entrerJoueur):
         for i in range(tableau.shape[0] - 1):
@@ -84,7 +76,6 @@ def jouer(joueur, tableau):
                 tableau[i, entrerJoueur] = joueur
                 return tableau
         tableau[5, entrerJoueur] = joueur
+        colorie_tableau(tableau)
+        print(tableau)
         return tableau
-    print(tableau)
-    print('Joueur',joueur,'veuillez jouer une case valide')
-    return jouer(joueur, tableau)

@@ -1,4 +1,5 @@
 from board import *
+from affichage import *
 
 import os
 

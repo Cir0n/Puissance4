@@ -3,9 +3,28 @@ import tkinter.font as tkFont
 from board import *
 
 
-def on_button_click(col):
-    print(f"Button clicked at column {col}")
-    print(buttons[0][col])
+def on_button_click(row, col):
+    """
+    fonction du bouton qui renvoie la position du bouton
+    """
+    print(f"Bouton cliqué en {row} {col}")
+    return (row, col)
+
+def colorie_tableau(tableau):
+    """
+    paramètres : tableau numpy de dimensions 6,7
+
+    prend le tableau actuel et change le png des boutons par rapport aux joueurs
+    si case de la position du bouton 0,4 = 1 alors le png change en rouge
+    """
+
+    for i in range(6):
+        for j in range(7):
+            button = Button(buttons[i][j])
+            if tableau[i][j] == 1:
+                button.image = "image/case_rouge.png"
+            elif tableau[i][j] == 2:
+                button.image = "image/case_jaune.png"
 
 
 
@@ -133,7 +152,7 @@ def jeu_local():
     image_vide = PhotoImage(file="image/case_vide.png")
     for i in range(6):
         for j in range(7):
-            button = Button(frame, image=image_vide, width=100, height=102, bg="white", command=lambda col=j: on_button_click(col), bd=0, highlightthickness=0)
+            button = Button(frame, image=image_vide, width=100, height=102, bg="white", command=lambda row=i, col=j: on_button_click(row, col), bd=0, highlightthickness=0)
             button.image = image_vide
             button.grid(row=i, column=j)
             buttons[i][j] = button
@@ -142,6 +161,9 @@ def jeu_local():
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
+
+def partie_gagne(joueur):
+    print()
 
 
 # Configurations de la fenetre puissance 4
