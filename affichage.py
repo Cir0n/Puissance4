@@ -5,6 +5,7 @@ from board import *
 
 def on_button_click(col):
     print(f"Button clicked at column {col}")
+    print(buttons[0][col])
 
 
 
@@ -135,6 +136,7 @@ def jeu_local():
             button = Button(frame, image=image_vide, width=100, height=102, bg="white", command=lambda col=j: on_button_click(col), bd=0, highlightthickness=0)
             button.image = image_vide
             button.grid(row=i, column=j)
+            buttons[i][j] = button
     frame.pack(side=BOTTOM)
 
     window.grid_columnconfigure(1, weight=0)
@@ -154,7 +156,7 @@ window.grid_columnconfigure(1, weight=1)
 window.grid_columnconfigure(2, weight=1)
 window.grid_columnconfigure(3, weight=1)
 
-buttons = [[None for _ in range(7)] for _ in range(7)]
+buttons = [[None for _ in range(7)] for _ in range(6)]
 
 affiche_menu()
 
