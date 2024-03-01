@@ -33,11 +33,18 @@ def on_button_click(row, col):
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
-    tmp = jouer(tableau, col)
+    tmp, gagnant = jouer(tableau, col)
+
     if np.array_equal(tmp, tableau):
         tableau = tmp
     print(tableau)
     colorie_tableau(tableau)
+    if gagnant is not None :
+        afficher_gagnant(gagnant)
+        return
+
+
+
 
 def clear():
     """
@@ -168,10 +175,18 @@ def jeu_local():
             button.grid(row=i, column=j)
             buttons[i][j] = button
     frame.pack(side=BOTTOM)
-
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
+
+
+def afficher_gagnant(joueur):
+
+        text = f"Joueur {joueur} à gagner"
+        title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
+        title_label.pack()
+
+        return True
 
 
 def partie_gagne(joueur):
@@ -195,6 +210,5 @@ window.grid_columnconfigure(3, weight=1)
 buttons = [[None for _ in range(7)] for _ in range(6)]
 
 affiche_menu()
-
 # Afficher la fenêtre
 window.mainloop()

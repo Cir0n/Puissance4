@@ -81,16 +81,16 @@ def jouer(tableau, entrerJoueur):
                 if tour >= 7:
                     if verification(tableau, joueur):
                         print("Joueur", joueur, "a gagné !")
-                        return tableau
+                        return tableau, joueur
                     elif egalite(tableau):
                         print("Égalité !")
-                        return tableau
+                        return tableau, None
                 joueur = (2 if joueur == 1 else 1)
-                return tableau
+                return tableau, None
         print("colonne pleine")
     else:
         print("position invalide")
-    return tableau
+    return tableau, None
 
 
 
