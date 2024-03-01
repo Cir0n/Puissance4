@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter.font as tkFont
 import numpy as np
 from board import *
+import time
 
 
 
@@ -40,8 +41,11 @@ def on_button_click(row, col):
     print(tableau)
     colorie_tableau(tableau)
     if gagnant is not None :
+        clear()
         afficher_gagnant(gagnant)
-        return
+
+
+
 
 
 
@@ -58,6 +62,9 @@ def clear():
     for l in list:
         l.destroy()
 
+    window.grid_columnconfigure(1, weight=1)
+    window.grid_columnconfigure(2, weight=1)
+    window.grid_columnconfigure(3, weight=1)
 
 def affiche_menu():
     clear()
@@ -143,6 +150,7 @@ def affiche_creer_en_ligne():
     title_label.grid()
 
 
+
 def affiche_rejoindre_partie_en_ligne():
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
@@ -182,11 +190,13 @@ def jeu_local():
 
 def afficher_gagnant(joueur):
 
-        text = f"Joueur {joueur} à gagner"
-        title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
-        title_label.pack()
+    text = f"Joueur {joueur} à gagner"
+    title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
+    title_label.pack()
 
-        return True
+    button=Button(window, text="Menu", command=affiche_menu)
+    button.pack()
+    return True
 
 
 def partie_gagne(joueur):
