@@ -92,6 +92,10 @@ def jouer(tableau, entrerJoueur):
         print("position invalide")
     return tableau, None
 
+def reinitialiser_joueur():
+    global joueur
+    joueur = 1
+
 
 
 

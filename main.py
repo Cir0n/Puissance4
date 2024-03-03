@@ -1,12 +1,7 @@
 from tkinter import *
 import tkinter.font as tkFont
-import numpy as np
 from board import *
 import time
-
-
-
-
 
 
 def colorie_tableau(tableau):
@@ -23,10 +18,11 @@ def colorie_tableau(tableau):
             button = buttons[i][j]
             if tableau[i][j] == 1:
                 button.configure(image=image_rouge, width=100, height=102, bd=0, highlightthickness=0)
-                button.image=image_rouge
+                button.image = image_rouge
             elif tableau[i][j] == 2:
                 button.configure(image=image_jaune, width=100, height=102, bd=0, highlightthickness=0)
                 button.image = image_jaune
+
 
 def on_button_click(row, col):
     """
@@ -35,19 +31,13 @@ def on_button_click(row, col):
     global tableau
     print(f"Bouton cliqué en {row} {col}")
     tmp, gagnant = jouer(tableau, col)
-
     if np.array_equal(tmp, tableau):
         tableau = tmp
     print(tableau)
     colorie_tableau(tableau)
-    if gagnant is not None :
+    if gagnant is not None:
         clear()
         afficher_gagnant(gagnant)
-
-
-
-
-
 
 
 def clear():
@@ -65,6 +55,7 @@ def clear():
     window.grid_columnconfigure(1, weight=1)
     window.grid_columnconfigure(2, weight=1)
     window.grid_columnconfigure(3, weight=1)
+
 
 def affiche_menu():
     clear()
@@ -150,26 +141,10 @@ def affiche_creer_en_ligne():
     title_label.grid()
 
 
-
 def affiche_rejoindre_partie_en_ligne():
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid()
-
-
-def creer_rond(x, y, r, window):  # coordonnées, rayon
-    x0 = x - r
-    y0 = y - r
-    x1 = x + r
-    y1 = y + r
-    rond = window.create_oval(x0, y0, x1, y1)
-    return rond
-
-
-def grille():
-    window.grid_columnconfigure(1, weight=1)
-    window.grid_columnconfigure(2, weight=1)
-    window.grid_columnconfigure(3, weight=1)
 
 
 def jeu_local():
@@ -178,7 +153,8 @@ def jeu_local():
     image_vide = PhotoImage(file="image/case_vide.png")
     for i in range(6):
         for j in range(7):
-            button = Button(frame, image=image_vide, width=100, height=102, bg="white", command=lambda row=i, col=j: on_button_click(row, col), bd=0, highlightthickness=0)
+            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
+                            command=lambda row=i, col=j: on_button_click(row, col), bd=0, highlightthickness=0)
             button.image = image_vide
             button.grid(row=i, column=j)
             buttons[i][j] = button
@@ -189,22 +165,31 @@ def jeu_local():
 
 
 def afficher_gagnant(joueur):
+    recommencer_partie()
+
+    font_style = tkFont.Font(family='Courier', size=20)
+
+    text = f"Joueur {joueur} a gagné"
+    title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
+    title_label.grid(column=2, row=0)
+
+    button = Button(window, text="Menu", command=affiche_menu, pady=20, bg='white', highlightthickness=0,
+                    font=font_style)
+    button.grid(row=4, column=2, sticky=EW, pady=35, padx=40)
+
+    print(tour,joueur)
+
+
+def recommencer_partie():
     global tableau
     global tour
-
-    text = f"Joueur {joueur} à gagner"
-    title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
-    title_label.pack()
-
-    button=Button(window, text="Menu", command=affiche_menu)
-    button.pack()
-    tableau = np.zeros([6, 7])
-    joueur = 1
+    tableau = np.zeros([6,7])
     tour = 0
-    return True
+    reinitialiser_joueur()
 
 def jeu_ordi(window):
     print()
+
 
 # Configurations de la fenetre puissance 4
 window = Tk()
