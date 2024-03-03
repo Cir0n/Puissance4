@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 tableau = np.zeros([6, 7])
 joueur = 1
@@ -98,6 +99,16 @@ def reinitialiser_joueur():
 
 def get_joueur():
     return joueur
+
+def ordi_facile_joue(tableau):
+    global joueur
+    joueur = 2
+    coups_possibles = []
+    for i in range(tableau.shape[0]):
+        if validite(tableau, i):
+            coups_possibles.append(i)
+    coup = coups_possibles[random.randint(0,len(coups_possibles)-1)]
+    return jouer(tableau, coup)
 
 
 
