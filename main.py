@@ -189,6 +189,8 @@ def jeu_local():
 
 
 def afficher_gagnant(joueur):
+    global tableau
+    global tour
 
     text = f"Joueur {joueur} à gagner"
     title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
@@ -196,11 +198,10 @@ def afficher_gagnant(joueur):
 
     button=Button(window, text="Menu", command=affiche_menu)
     button.pack()
+    tableau = np.zeros([6, 7])
+    joueur = 1
+    tour = 0
     return True
-
-
-def partie_gagne(joueur):
-    print()
 
 def jeu_ordi(window):
     print()
