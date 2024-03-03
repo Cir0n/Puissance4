@@ -108,7 +108,6 @@ def affiche_partie_locale():
 
 def affiche_partie_ordi():
     clear()
-
     # Création du titre
     title_label = Label(window, text="Niveaux de l'ordinateur", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=1, column=1, columnspan=3, sticky=EW)
@@ -155,6 +154,7 @@ def affiche_partie_en_ligne():
 
 
 def affiche_creer_en_ligne():
+
     clear()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
                         pady=30)
@@ -162,12 +162,14 @@ def affiche_creer_en_ligne():
 
 
 def affiche_rejoindre_partie_en_ligne():
+
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid()
 
 
 def jeu_local():
+
     clear()
     frame = Frame(window, bg='#7092BE')
     image_vide = PhotoImage(file="image/case_vide.png")
@@ -186,6 +188,7 @@ def jeu_local():
 
 
 def afficher_gagnant(joueur):
+
     recommencer_partie()
     clear()
     font_style = tkFont.Font(family='Courier', size=20)
@@ -201,22 +204,20 @@ def afficher_gagnant(joueur):
 
 
 def recommencer_partie():
+
     global tableau
     global tour
     tableau = np.zeros([6,7])
     tour = 0
     reinitialiser_joueur()
 
-def jeu_ordi(window):
-    print()
 def designe_joueur():
+
     #Afficher tour du joueur
-    l = 0
-    for i in window.slaves():
+    for l, i in enumerate(window.slaves()):
         if l == 1:
             i.destroy()
             break
-        l+=1
     joueur = get_joueur()
     title_frame= Frame(window, bg='#7092BE')
     text = f"tour du Joueur : {joueur}"
