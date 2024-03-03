@@ -171,7 +171,6 @@ def jeu_local():
     clear()
     frame = Frame(window, bg='#7092BE')
     image_vide = PhotoImage(file="image/case_vide.png")
-    designe_joueur()
     for i in range(6):
         for j in range(7):
             button = Button(frame, image=image_vide, width=100, height=102, bg="white",
@@ -180,6 +179,7 @@ def jeu_local():
             button.grid(row=i, column=j)
             buttons[i][j] = button
     frame.pack(side=BOTTOM)
+    designe_joueur()
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
@@ -211,10 +211,16 @@ def jeu_ordi(window):
     print()
 def designe_joueur():
     #Afficher tour du joueur
+    l = 0
+    for i in window.slaves():
+        if l == 1:
+            i.destroy()
+            break
+        l+=1
     joueur = get_joueur()
     title_frame= Frame(window, bg='#7092BE')
-    text = f"tour du Joueur : {joueur}."
-    designe_tour = Label(title_frame, text=text, font=("Courrier"))
+    text = f"tour du Joueur : {joueur}"
+    designe_tour = Label(title_frame, text=text, font=("Courrier", 30), bg='#7092BE', fg='white', pady=30)
     designe_tour.pack()
     title_frame.pack(side=TOP)
 
