@@ -84,7 +84,7 @@ def jouer(tableau, entrerJoueur):
                         return tableau, joueur
                     elif egalite(tableau):
                         print("Égalité !")
-                        return tableau, None
+                        return tableau, "egalité"
                 joueur = (2 if joueur == 1 else 1)
                 return tableau, None
         print("colonne pleine")
@@ -95,6 +95,10 @@ def jouer(tableau, entrerJoueur):
 def reinitialiser_joueur():
     global joueur
     joueur = 1
+
+def get_joueur():
+    return joueur
+
 
 
 

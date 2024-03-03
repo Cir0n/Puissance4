@@ -31,13 +31,14 @@ def on_button_click(row, col):
     global tableau
     print(f"Bouton cliqué en {row} {col}")
     tmp, gagnant = jouer(tableau, col)
+    designe_joueur()
     if np.array_equal(tmp, tableau):
         tableau = tmp
     print(tableau)
     colorie_tableau(tableau)
     if gagnant is not None:
-        clear()
         afficher_gagnant(gagnant)
+
 
 
 def clear():
@@ -107,9 +108,28 @@ def affiche_partie_locale():
 
 def affiche_partie_ordi():
     clear()
-    title_label = Label(window, text="Niveaux de l'ordinateur", font=("Courrier", 48), bg='#7092BE', fg='white',
-                        pady=30)
-    title_label.grid()
+
+    # Création du titre
+    title_label = Label(window, text="Niveaux de l'ordinateur", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
+    title_label.grid(row=1, column=1, columnspan=3, sticky=EW)
+
+    font_style = tkFont.Font(family='Courier', size=20)
+
+    facile_button = Button(window, text="Facile", command=affiche_partie_locale, font=font_style,
+                          width=20, pady=20, bd=0, highlightthickness=0)
+    facile_button.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
+
+    moyen_button = Button(window, text="Moyen", command=affiche_partie_locale,
+                           font=font_style, width=20, pady=20, bd=0, highlightthickness=0)
+    moyen_button.grid(row=3, column=2, columnspan=1, sticky=EW, pady=15)
+
+    difficile_button = Button(window, text="Difficile", command=affiche_partie_locale, font=font_style,
+                         width=20, pady=20, bd=0, highlightthickness=0)
+    difficile_button.grid(row=4, column=2, columnspan=1, sticky=EW, pady=15)
+
+    retour_button = Button(window, text="Retour", command=affiche_partie_locale, pady=20, fg='black', bd=0,
+                         highlightthickness=0, font=font_style)
+    retour_button.grid(row=5, column=2, columnspan=1, sticky=EW, pady=35, padx=40)
 
 
 def affiche_partie_en_ligne():
@@ -151,6 +171,7 @@ def jeu_local():
     clear()
     frame = Frame(window, bg='#7092BE')
     image_vide = PhotoImage(file="image/case_vide.png")
+    designe_joueur()
     for i in range(6):
         for j in range(7):
             button = Button(frame, image=image_vide, width=100, height=102, bg="white",
@@ -166,7 +187,7 @@ def jeu_local():
 
 def afficher_gagnant(joueur):
     recommencer_partie()
-
+    clear()
     font_style = tkFont.Font(family='Courier', size=20)
 
     text = f"Joueur {joueur} a gagné"
@@ -177,7 +198,6 @@ def afficher_gagnant(joueur):
                     font=font_style)
     button.grid(row=4, column=2, sticky=EW, pady=35, padx=40)
 
-    print(tour,joueur)
 
 
 def recommencer_partie():
@@ -189,7 +209,15 @@ def recommencer_partie():
 
 def jeu_ordi(window):
     print()
+def designe_joueur():
+    #Afficher tour du joueur
 
+    joueur = get_joueur()
+    title_frame= Frame(window, bg='#7092BE')
+    text = f"tour du Joueur : {joueur}."
+    designe_tour = Label(title_frame, text=text, font=("Courrier"))
+    designe_tour.pack()
+    title_frame.pack(side=TOP)
 
 # Configurations de la fenetre puissance 4
 window = Tk()
