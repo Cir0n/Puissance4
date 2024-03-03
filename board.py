@@ -74,7 +74,6 @@ def jouer(tableau, entrerJoueur):
     global joueur
     global tour
     if validite(tableau, entrerJoueur):
-
         for i in range(tableau.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
             if tableau[i, entrerJoueur] == 0:
                 tableau[i, entrerJoueur] = joueur
@@ -99,6 +98,20 @@ def reinitialiser_joueur():
 
 def get_joueur():
     return joueur
+
+def coup_gagnant(tableau, joueur):
+    for i in range(7):
+        tableau_tmp = np.array(tableau)
+        if validite(tableau_tmp, joueur):
+            for l in range(tableau_tmp.shape[0] - 1, -1, -1):
+                if tableau_tmp[l, i] == 0:
+                    tableau_tmp[l, i] = joueur
+                    break
+            if verification(tableau_tmp, joueur):
+                return i
+    return -1
+
+
 
 def ordi_facile_joue(tableau):
     global joueur

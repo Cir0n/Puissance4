@@ -50,7 +50,7 @@ def on_button_click_ordi_facile(row, col):
     designe_joueur()
     if np.array_equal(tmp, tableau):
         tableau = tmp
-    print(tableau)
+
     colorie_tableau(tableau)
     if gagnant is not None:
         afficher_gagnant(gagnant)
@@ -59,7 +59,6 @@ def on_button_click_ordi_facile(row, col):
         designe_joueur()
         if np.array_equal(tmp, tableau):
             tableau = tmp
-        print(tableau)
         colorie_tableau(tableau)
         if gagnant is not None:
             afficher_gagnant(gagnant)
