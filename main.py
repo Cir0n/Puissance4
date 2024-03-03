@@ -189,11 +189,11 @@ def afficher_gagnant(joueur):
     recommencer_partie()
     clear()
     font_style = tkFont.Font(family='Courier', size=20)
-
     text = f"Joueur {joueur} a gagné"
+    if joueur == "égalité":
+        text = "égalité"
     title_label = Label(window, text=text, font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(column=2, row=0)
-
     button = Button(window, text="Menu", command=affiche_menu, pady=20, bg='white', highlightthickness=0,
                     font=font_style)
     button.grid(row=4, column=2, sticky=EW, pady=35, padx=40)
@@ -211,7 +211,6 @@ def jeu_ordi(window):
     print()
 def designe_joueur():
     #Afficher tour du joueur
-
     joueur = get_joueur()
     title_frame= Frame(window, bg='#7092BE')
     text = f"tour du Joueur : {joueur}."

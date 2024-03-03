@@ -84,7 +84,7 @@ def jouer(tableau, entrerJoueur):
                         return tableau, joueur
                     elif egalite(tableau):
                         print("Égalité !")
-                        return tableau, "egalité"
+                        return tableau, "égalité"
                 joueur = (2 if joueur == 1 else 1)
                 return tableau, None
         print("colonne pleine")
