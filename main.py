@@ -46,6 +46,7 @@ def on_button_click_ordi_facile(row, col):
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
+    print(tableau)
     tmp, gagnant = jouer(tableau, col)
     designe_joueur()
     if np.array_equal(tmp, tableau):
@@ -56,6 +57,27 @@ def on_button_click_ordi_facile(row, col):
         afficher_gagnant(gagnant)
     else:
         tmp, gagnant = ordi_facile_joue(tableau)
+        designe_joueur()
+        if np.array_equal(tmp, tableau):
+            tableau = tmp
+        colorie_tableau(tableau)
+        if gagnant is not None:
+            afficher_gagnant(gagnant)
+
+def on_button_click_ordi_moyen(row, col):
+    global tableau
+    print(f"Bouton cliqué en {row} {col}")
+    print(tableau)
+    tmp, gagnant = jouer(tableau, col)
+    designe_joueur()
+    if np.array_equal(tmp, tableau):
+        tableau = tmp
+
+    colorie_tableau(tableau)
+    if gagnant is not None:
+        afficher_gagnant(gagnant)
+    else:
+        tmp, gagnant = ordi_moyen_joue(tableau)
         designe_joueur()
         if np.array_equal(tmp, tableau):
             tableau = tmp
@@ -143,7 +165,7 @@ def affiche_partie_ordi():
                           width=20, pady=20, bd=0, highlightthickness=0)
     facile_button.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
 
-    moyen_button = Button(window, text="Moyen", command=affiche_partie_locale,
+    moyen_button = Button(window, text="Moyen", command=jeu_local_ordi_moyen,
                            font=font_style, width=20, pady=20, bd=0, highlightthickness=0)
     moyen_button.grid(row=3, column=2, columnspan=1, sticky=EW, pady=15)
 
@@ -220,6 +242,24 @@ def jeu_local_ordi_facile():
         for j in range(7):
             button = Button(frame, image=image_vide, width=100, height=102, bg="white",
                             command=lambda row=i, col=j: on_button_click_ordi_facile(row, col), bd=0, highlightthickness=0)
+            button.image = image_vide
+            button.grid(row=i, column=j)
+            buttons[i][j] = button
+    frame.pack(side=BOTTOM)
+    designe_joueur()
+    window.grid_columnconfigure(1, weight=0)
+    window.grid_columnconfigure(2, weight=0)
+    window.grid_columnconfigure(3, weight=0)
+
+def jeu_local_ordi_moyen():
+
+    clear()
+    frame = Frame(window, bg='#7092BE')
+    image_vide = PhotoImage(file="image/case_vide.png")
+    for i in range(6):
+        for j in range(7):
+            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
+                            command=lambda row=i, col=j: on_button_click_ordi_moyen(row, col), bd=0, highlightthickness=0)
             button.image = image_vide
             button.grid(row=i, column=j)
             buttons[i][j] = button

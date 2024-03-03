@@ -123,6 +123,24 @@ def ordi_facile_joue(tableau):
     coup = coups_possibles[random.randint(0,len(coups_possibles)-1)]
     return jouer(tableau, coup)
 
+def ordi_moyen_joue(tableau):
+    global joueur
+    joueur = 2
+    coup_gagnant_ordi = coup_gagnant(tableau, joueur)
+    coup_gagnant_adversaire = coup_gagnant(tableau, joueur-1)
+    if coup_gagnant_ordi != -1:
+        return jouer(tableau, coup_gagnant_ordi)
+    elif coup_gagnant_adversaire != -1:
+        return jouer(tableau, coup_gagnant_adversaire)
+    else:
+        coups_possibles = []
+        for i in range(tableau.shape[0]):
+            if validite(tableau, i):
+                coups_possibles.append(i)
+        coup = coups_possibles[random.randint(0, len(coups_possibles) - 1)]
+        return jouer(tableau, coup)
+
+
 
 
 
