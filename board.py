@@ -1,9 +1,16 @@
 import numpy as np
 import random
+import requests
+
 
 tableau = np.zeros([6, 7])
 joueur = 1
 tour = 0
+coups_produits = ''
+SERVER = 'https://connect4.gamesolver.org/solve?pos='
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
+}
 
 
 def verification(tableau, joueur):
@@ -73,10 +80,12 @@ def jouer(tableau, entrerJoueur):
     """
     global joueur
     global tour
+    global coups_produits
     if validite(tableau, entrerJoueur):
         for i in range(tableau.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
             if tableau[i, entrerJoueur] == 0:
                 tableau[i, entrerJoueur] = joueur
+                coups_produits += str(entrerJoueur+1)
                 tour += 1
                 if tour >= 7:
                     if verification(tableau, joueur):
@@ -94,7 +103,9 @@ def jouer(tableau, entrerJoueur):
 
 def reinitialiser_joueur():
     global joueur
+    global coups_produits
     joueur = 1
+    coups_produits = ''
 
 def get_joueur():
     return joueur
@@ -140,8 +151,17 @@ def ordi_moyen_joue(tableau):
         coup = coups_possibles[random.randint(0, len(coups_possibles) - 1)]
         return jouer(tableau, coup)
 
-
-
+def ordi_difficile_joue(tableau):
+    global joueur
+    joueur = 2
+    req = SERVER + coups_produits
+    x = requests.get(req, headers=headers).json()
+    max = -np.inf
+    coup = 0
+    for i in range(len(x['score'])):
+        if x['score'][i] >= max and x['score'][i] != 100:
+            coup, max, = i, x['score'][i]
+    return jouer(tableau, coup)
 
 
 
