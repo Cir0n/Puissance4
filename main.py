@@ -1,3 +1,4 @@
+import time
 from tkinter import *
 import tkinter.font as tkFont
 from board import *
@@ -21,6 +22,15 @@ def colorie_tableau(tableau):
             elif tableau[i][j] == 2:
                 button.configure(image=image_jaune, width=100, height=102, bd=0, highlightthickness=0)
                 button.image = image_jaune
+        window.update()
+
+
+def stop_buttons():
+    for i in range(6):
+        for j in range(7):
+            button = buttons[i][j]
+            button.configure(command=print)
+    window.update()
 
 
 
@@ -35,9 +45,11 @@ def on_button_click(row, col):
     if not np.array_equal(tmp, tableau):
         tableau = tmp
         print(tableau)
-        designe_joueur()
         colorie_tableau(tableau)
+        designe_joueur()
         if gagnant is not None:
+            stop_buttons()
+            time.sleep(1.5)
             afficher_gagnant(gagnant)
 
 def on_button_click_ordi_facile(row, col):
@@ -54,6 +66,8 @@ def on_button_click_ordi_facile(row, col):
         print(tableau)
         colorie_tableau(tableau)
         if gagnant is not None:
+            stop_buttons()
+            time.sleep(1.5)
             afficher_gagnant(gagnant)
         else:
             tmp, gagnant = ordi_facile_joue(tableau)
@@ -62,6 +76,8 @@ def on_button_click_ordi_facile(row, col):
                 tableau = tmp
             colorie_tableau(tableau)
             if gagnant is not None:
+                stop_buttons()
+                time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
 def on_button_click_ordi_moyen(row, col):
@@ -75,6 +91,8 @@ def on_button_click_ordi_moyen(row, col):
         designe_joueur()
         colorie_tableau(tableau)
         if gagnant is not None:
+            stop_buttons()
+            time.sleep(1.5)
             afficher_gagnant(gagnant)
         else:
             tmp, gagnant = ordi_moyen_joue(tableau)
@@ -83,6 +101,8 @@ def on_button_click_ordi_moyen(row, col):
                 tableau = tmp
             colorie_tableau(tableau)
             if gagnant is not None:
+                stop_buttons()
+                time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
 def on_button_click_ordi_difficile(row, col):
@@ -96,6 +116,8 @@ def on_button_click_ordi_difficile(row, col):
         designe_joueur()
         colorie_tableau(tableau)
         if gagnant is not None:
+            stop_buttons()
+            time.sleep(1.5)
             afficher_gagnant(gagnant)
         else:
             tmp, gagnant = ordi_difficile_joue(tableau)
@@ -104,6 +126,8 @@ def on_button_click_ordi_difficile(row, col):
                 tableau = tmp
             colorie_tableau(tableau)
             if gagnant is not None:
+                stop_buttons()
+                time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
 
@@ -310,8 +334,7 @@ def jeu_local_ordi_difficile():
 
 
 def afficher_gagnant(joueur):
-
-    recommencer_partie()
+    colorie_tableau(tableau)
     clear()
     font_style = tkFont.Font(family='Courier', size=20)
     text = f"Joueur {joueur} a gagné"
@@ -322,6 +345,7 @@ def afficher_gagnant(joueur):
     button = Button(window, text="Menu", command=affiche_menu, pady=20, bg='white', highlightthickness=0,
                     font=font_style)
     button.grid(row=4, column=2, sticky=EW, pady=35, padx=40)
+    recommencer_partie()
 
 
 
