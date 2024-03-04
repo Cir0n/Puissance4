@@ -30,14 +30,15 @@ def on_button_click(row, col):
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
-    tmp, gagnant = jouer(tableau, col)
-    designe_joueur()
-    if np.array_equal(tmp, tableau):
+    tmp = np.array(tableau)
+    tmp, gagnant = jouer(tmp, col)
+    if not np.array_equal(tmp, tableau):
         tableau = tmp
-    print(tableau)
-    colorie_tableau(tableau)
-    if gagnant is not None:
-        afficher_gagnant(gagnant)
+        print(tableau)
+        designe_joueur()
+        colorie_tableau(tableau)
+        if gagnant is not None:
+            afficher_gagnant(gagnant)
 
 def on_button_click_ordi_facile(row, col):
     """
@@ -45,65 +46,65 @@ def on_button_click_ordi_facile(row, col):
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
-    tmp, gagnant = jouer(tableau, col)
-    print(tableau)
+    tmp = np.array(tableau)
+    tmp, gagnant = jouer(tmp, col)
     designe_joueur()
-    if np.array_equal(tmp, tableau):
+    if not np.array_equal(tmp, tableau):
         tableau = tmp
-
-    colorie_tableau(tableau)
-    if gagnant is not None:
-        afficher_gagnant(gagnant)
-    else:
-        tmp, gagnant = ordi_facile_joue(tableau)
-        designe_joueur()
-        if np.array_equal(tmp, tableau):
-            tableau = tmp
+        print(tableau)
         colorie_tableau(tableau)
         if gagnant is not None:
             afficher_gagnant(gagnant)
+        else:
+            tmp, gagnant = ordi_facile_joue(tableau)
+            designe_joueur()
+            if np.array_equal(tmp, tableau):
+                tableau = tmp
+            colorie_tableau(tableau)
+            if gagnant is not None:
+                afficher_gagnant(gagnant)
 
 def on_button_click_ordi_moyen(row, col):
     global tableau
     print(f"Bouton cliqué en {row} {col}")
-    tmp, gagnant = jouer(tableau, col)
-    print(tableau)
-    designe_joueur()
-    if np.array_equal(tmp, tableau):
+    tmp = np.array(tableau)
+    tmp, gagnant = jouer(tmp, col)
+    if not np.array_equal(tmp, tableau):
         tableau = tmp
-
-    colorie_tableau(tableau)
-    if gagnant is not None:
-        afficher_gagnant(gagnant)
-    else:
-        tmp, gagnant = ordi_moyen_joue(tableau)
+        print(tableau)
         designe_joueur()
-        if np.array_equal(tmp, tableau):
-            tableau = tmp
         colorie_tableau(tableau)
         if gagnant is not None:
             afficher_gagnant(gagnant)
+        else:
+            tmp, gagnant = ordi_moyen_joue(tableau)
+            designe_joueur()
+            if np.array_equal(tmp, tableau):
+                tableau = tmp
+            colorie_tableau(tableau)
+            if gagnant is not None:
+                afficher_gagnant(gagnant)
 
 def on_button_click_ordi_difficile(row, col):
     global tableau
     print(f"Bouton cliqué en {row} {col}")
-    tmp, gagnant = jouer(tableau, col)
-    print(tableau)
-    designe_joueur()
-    if np.array_equal(tmp, tableau):
+    tmp = np.array(tableau)
+    tmp, gagnant = jouer(tmp, col)
+    if not np.array_equal(tmp, tableau):
         tableau = tmp
-
-    colorie_tableau(tableau)
-    if gagnant is not None:
-        afficher_gagnant(gagnant)
-    else:
-        tmp, gagnant = ordi_difficile_joue(tableau)
+        print(tableau)
         designe_joueur()
-        if np.array_equal(tmp, tableau):
-            tableau = tmp
         colorie_tableau(tableau)
         if gagnant is not None:
             afficher_gagnant(gagnant)
+        else:
+            tmp, gagnant = ordi_difficile_joue(tableau)
+            designe_joueur()
+            if np.array_equal(tmp, tableau):
+                tableau = tmp
+            colorie_tableau(tableau)
+            if gagnant is not None:
+                afficher_gagnant(gagnant)
 
 
 

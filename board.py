@@ -68,7 +68,7 @@ def validite(tableau, position_jouer):
     return False
 
 
-def jouer(tableau, entrerJoueur):
+def jouer(t, entrerJoueur):
     """
     paramètres : la position à jouer; le joueur actuel; tableau numpy de dimensions 6,7
     renvoie la modification du tableau
@@ -81,25 +81,24 @@ def jouer(tableau, entrerJoueur):
     global joueur
     global tour
     global coups_produits
-    if validite(tableau, entrerJoueur):
-        for i in range(tableau.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
-            if tableau[i, entrerJoueur] == 0:
-                tableau[i, entrerJoueur] = joueur
+    if validite(t, entrerJoueur):
+        for i in range(t.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
+            if t[i, entrerJoueur] == 0:
+                t[i, entrerJoueur] = joueur
                 coups_produits += str(entrerJoueur+1)
                 tour += 1
                 if tour >= 7:
-                    if verification(tableau, joueur):
+                    if verification(t, joueur):
                         print("Joueur", joueur, "a gagné !")
-                        return tableau, joueur
-                    elif egalite(tableau):
+                        return t, joueur
+                    elif egalite(t):
                         print("Égalité !")
-                        return tableau, "égalité"
+                        return t, "égalité"
                 joueur = (2 if joueur == 1 else 1)
-                return tableau, None
-        print("colonne pleine")
+                return t, None
     else:
         print("position invalide")
-    return tableau, None
+    return t, None
 
 def reinitialiser_joueur():
     global joueur
