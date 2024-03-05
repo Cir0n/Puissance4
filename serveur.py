@@ -2,8 +2,10 @@ import socket
 import subprocess
 import time
 pos_joue = '-1'
+data_recue = None
 def creer_serveur():
     global pos_joue
+    global data_recue
     hostname = subprocess.check_output("hostname", shell=True).decode()
     hostname = hostname[:-2]
     IP = socket.gethostbyname(hostname)
@@ -36,6 +38,7 @@ def creer_serveur():
                 break
             print(f"Message : {data_recue.decode()}")
             break
+        data_recue = None
 
     s.close()
     connection_socket.close()
@@ -43,3 +46,7 @@ def creer_serveur():
 def envoie_pos_joue_serveur(col):
     global pos_joue
     pos_joue = str(col)
+
+def get_data_serveur():
+    global data_recue
+    return data_recue

@@ -52,8 +52,55 @@ def activate_buttons(lvl):
                 button.configure(command=lambda row=i, col=j: on_button_click_online_serveur(row, col))
             elif lvl == 5:
                 button.configure(command=lambda row=i, col=j: on_button_click_online_client(row, col))
-                #stop_buttons()
             window.update()
+
+def att_adversaire_joue_client():
+    global tableau
+    while True:
+        coup_adversaire = get_data_client()
+        if coup_adversaire != None:
+            coup_adversaire = int(coup_adversaire.decode())
+            print(type(coup_adversaire), coup_adversaire)
+            activate_buttons(5)
+            tmp = np.array(tableau)
+            tmp, gagnant = jouer(tmp, coup_adversaire)
+            if not np.array_equal(tmp, tableau):
+                tableau = tmp
+                colorie_tableau(tableau)
+                designe_joueur()
+                if gagnant is not None:
+                    stop_buttons()
+                    afficher_gagnant(gagnant)
+                    time.sleep(1.5)
+                    break
+                break
+            break
+    print('stop thread client')
+    return
+
+def att_adversaire_joue_serveur():
+    global tableau
+    while True:
+        coup_adversaire = get_data_serveur()
+        if coup_adversaire != None:
+            coup_adversaire = int(coup_adversaire.decode())
+            print(type(coup_adversaire), coup_adversaire)
+            activate_buttons(4)
+            tmp = np.array(tableau)
+            tmp, gagnant = jouer(tmp, coup_adversaire)
+            if not np.array_equal(tmp, tableau):
+                tableau = tmp
+                colorie_tableau(tableau)
+                designe_joueur()
+                if gagnant is not None:
+                    stop_buttons()
+                    afficher_gagnant(gagnant)
+                    time.sleep(1.5)
+                    break
+                break
+            break
+    print('stop thread serveur')
+    return
 
 
 def on_button_click(row, col):
@@ -94,6 +141,9 @@ def on_button_click_online_serveur(row, col):
             stop_buttons()
             time.sleep(1.5)
             afficher_gagnant(gagnant)
+        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_serveur)
+        thread_attente_adversaire.start()
+
 
 def on_button_click_online_client(row, col):
     """
@@ -114,6 +164,8 @@ def on_button_click_online_client(row, col):
             stop_buttons()
             time.sleep(1.5)
             afficher_gagnant(gagnant)
+        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_client)
+        thread_attente_adversaire.start()
 
 
 def on_button_click_ordi_facile(row, col):
@@ -357,6 +409,10 @@ def jeu(lvl):
     frame.pack(side=BOTTOM)
     designe_joueur()
     activate_buttons(lvl)
+    if lvl == 5:
+        stop_buttons()
+        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_client)
+        thread_attente_adversaire.start()
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
