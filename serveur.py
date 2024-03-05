@@ -20,12 +20,20 @@ def creer_serveur():
 
 
     while True :
-        text_envoye = input("Vous : ")
-        connection_socket.sendall(text_envoye.encode())
-        data_recue = connection_socket.recv(MAX_DATA_SIZE)
-        if not data_recue:
-            break
-        print(f"Message : {data_recue.decode()}")
+        global pos_joue
+        pos_joue = '-1'
+        if envoie_pos_joue:
+            if pos_joue != '-1':
+                connection_socket.sendall(pos_joue.encode())
+                pos_joue = '-1'
+                data_recue = connection_socket.recv(MAX_DATA_SIZE)
+                if not data_recue:
+                    break
+                print(f"Message : {data_recue.decode()}")
 
     s.close()
     connection_socket.close()
+
+def envoie_pos_joue(col):
+    global pos_joue
+    pos_joue = str(col)

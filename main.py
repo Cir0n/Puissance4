@@ -33,7 +33,21 @@ def stop_buttons():
             button.configure(command=print)
     window.update()
 
-
+def activate_buttons(lvl):
+    for i in range(6):
+        for j in range(7):
+            button = buttons[i][j]
+            if lvl == 0:
+                button.configure(command=lambda row=i, col=j: on_button_click(row, col))
+            elif lvl == 1:
+                button.configure(command=lambda row=i, col=j: on_button_click_ordi_facile(row, col))
+            elif lvl == 2:
+                button.configure(command=lambda row=i, col=j: on_button_click_ordi_moyen(row, col))
+            elif lvl == 3:
+                button.configure(command=lambda row=i, col=j: on_button_click_ordi_difficile(row, col))
+            elif lvl == 4:
+                button.configure(command=lambda row=i, col=j: on_button_click_online(row, col))
+            window.update()
 
 def on_button_click(row, col):
     """
@@ -52,6 +66,27 @@ def on_button_click(row, col):
             stop_buttons()
             time.sleep(1.5)
             afficher_gagnant(gagnant)
+
+def on_button_click_online(row, col):
+    """
+    fonction du bouton qui renvoie la position du bouton
+    """
+    global tableau
+    print(f"Bouton cliqué en {row} {col}")
+    tmp = np.array(tableau)
+    tmp, gagnant = jouer(tmp, col)
+    if not np.array_equal(tmp, tableau):
+        tableau = tmp
+        print(tableau)
+        colorie_tableau(tableau)
+        designe_joueur()
+        envoie_pos_joue(col) #envoie à l'adversaire la pos jouée
+        stop_buttons()
+        if gagnant is not None:
+            stop_buttons()
+            time.sleep(1.5)
+            afficher_gagnant(gagnant)
+
 
 def on_button_click_ordi_facile(row, col):
     """
@@ -185,7 +220,7 @@ def affiche_partie_locale():
 
     font_style = tkFont.Font(family='Courier', size=20)
 
-    partie_joueurs_button = Button(window, text="Jouer à 2", command=jeu_local, font=font_style,
+    partie_joueurs_button = Button(window, text="Jouer à 2", command=lambda lvl=0: jeu(lvl), font=font_style,
                                    width=20, pady=20,
                                    bd=0, highlightthickness=0)
     partie_joueurs_button.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
@@ -207,15 +242,15 @@ def affiche_partie_ordi():
 
     font_style = tkFont.Font(family='Courier', size=20)
 
-    facile_button = Button(window, text="Facile", command=jeu_local_ordi_facile, font=font_style,
+    facile_button = Button(window, text="Facile", command=lambda lvl=1: jeu(lvl), font=font_style,
                           width=20, pady=20, bd=0, highlightthickness=0)
     facile_button.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
 
-    moyen_button = Button(window, text="Moyen", command=jeu_local_ordi_moyen,
+    moyen_button = Button(window, text="Moyen", command=lambda lvl=2: jeu(lvl),
                            font=font_style, width=20, pady=20, bd=0, highlightthickness=0)
     moyen_button.grid(row=3, column=2, columnspan=1, sticky=EW, pady=15)
 
-    difficile_button = Button(window, text="Difficile", command=jeu_local_ordi_difficile, font=font_style,
+    difficile_button = Button(window, text="Difficile", command=lambda lvl=3: jeu(lvl), font=font_style,
                          width=20, pady=20, bd=0, highlightthickness=0)
     difficile_button.grid(row=4, column=2, columnspan=1, sticky=EW, pady=15)
 
@@ -253,7 +288,7 @@ def affiche_creer_en_ligne():
                         pady=30)
     title_label.grid()
     thread_creer_partie = threading.Thread(target=creer_serveur)
-    thread_lance_jeu = threading.Thread(target=jeu_en_ligne)
+    thread_lance_jeu = threading.Thread(target=jeu, args=(4,))
     thread_lance_jeu.start()
     thread_creer_partie.start()
 
@@ -272,10 +307,16 @@ def affiche_rejoindre_partie_en_ligne():
     entry.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
     entry.focus()
 
-    connect_button = Button(window, text="Connect", bg='white', fg='black', command=lambda ip=entree: connect(ip))
+    connect_button = Button(window, text="Connect", bg='white', fg='black', command=lambda ip=entree: rejoindre_partie(ip))
     connect_button.grid(row=3, column=2, columnspan = 2, sticky=S)
 
-def jeu_local():
+def rejoindre_partie(ip):
+    thread_rejoindre_partie = threading.Thread(target=connect, args=(ip,))
+    thread_lance_jeu = threading.Thread(target=jeu, args=(4,))
+    thread_rejoindre_partie.start()
+    thread_lance_jeu.start()
+    set_joueur(2)
+def jeu(lvl):
 
     clear()
     frame = Frame(window, bg='#7092BE')
@@ -289,82 +330,10 @@ def jeu_local():
             buttons[i][j] = button
     frame.pack(side=BOTTOM)
     designe_joueur()
+    activate_buttons(lvl)
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
-
-def jeu_local_ordi_facile():
-
-    clear()
-    frame = Frame(window, bg='#7092BE')
-    image_vide = PhotoImage(file="image/case_vide.png")
-    for i in range(6):
-        for j in range(7):
-            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
-                            command=lambda row=i, col=j: on_button_click_ordi_facile(row, col), bd=0, highlightthickness=0)
-            button.image = image_vide
-            button.grid(row=i, column=j)
-            buttons[i][j] = button
-    frame.pack(side=BOTTOM)
-    designe_joueur()
-    window.grid_columnconfigure(1, weight=0)
-    window.grid_columnconfigure(2, weight=0)
-    window.grid_columnconfigure(3, weight=0)
-
-def jeu_local_ordi_moyen():
-
-    clear()
-    frame = Frame(window, bg='#7092BE')
-    image_vide = PhotoImage(file="image/case_vide.png")
-    for i in range(6):
-        for j in range(7):
-            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
-                            command=lambda row=i, col=j: on_button_click_ordi_moyen(row, col), bd=0, highlightthickness=0)
-            button.image = image_vide
-            button.grid(row=i, column=j)
-            buttons[i][j] = button
-    frame.pack(side=BOTTOM)
-    designe_joueur()
-    window.grid_columnconfigure(1, weight=0)
-    window.grid_columnconfigure(2, weight=0)
-    window.grid_columnconfigure(3, weight=0)
-
-def jeu_local_ordi_difficile():
-
-    clear()
-    frame = Frame(window, bg='#7092BE')
-    image_vide = PhotoImage(file="image/case_vide.png")
-    for i in range(6):
-        for j in range(7):
-            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
-                            command=lambda row=i, col=j: on_button_click_ordi_difficile(row, col), bd=0, highlightthickness=0)
-            button.image = image_vide
-            button.grid(row=i, column=j)
-            buttons[i][j] = button
-    frame.pack(side=BOTTOM)
-    designe_joueur()
-    window.grid_columnconfigure(1, weight=0)
-    window.grid_columnconfigure(2, weight=0)
-    window.grid_columnconfigure(3, weight=0)
-
-def jeu_en_ligne():
-    window.update()
-    clear()
-    frame = Frame(window, bg='#7092BE')
-    image_vide = PhotoImage(file="image/case_vide.png")
-    for i in range(6):
-        for j in range(7):
-            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
-                            command=lambda row=i, col=j: on_button_click(row, col), bd=0, highlightthickness=0)
-            button.image = image_vide
-            button.grid(row=i, column=j)
-            buttons[i][j] = button
-    frame.pack(side=BOTTOM)
-    designe_joueur()
-    window.grid_columnconfigure(1, weight=0)
-    window.grid_columnconfigure(2, weight=0)
-    window.grid_columnconfigure(3, weight=0)
-
 
 def afficher_gagnant(joueur):
     colorie_tableau(tableau)

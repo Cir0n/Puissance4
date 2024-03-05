@@ -109,6 +109,11 @@ def reinitialiser_joueur():
 def get_joueur():
     return joueur
 
+def set_joueur(j):
+    global joueur
+    joueur = j
+
+
 def coup_gagnant(tableau, joueur):
     for i in range(7):
         tableau_tmp = np.array(tableau)

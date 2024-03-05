@@ -21,12 +21,18 @@ def connect(ip):
             print("Connecté au server")
             break
     while True :
+        global pos_joue
+        pos_joue = '-1'
         Data_recues = s.recv(MAX_DATA_SIZE)
         if not Data_recues :
             break
         print(f"Message : {Data_recues.decode()}")
-        texte_envoyer = input("Vous : ")
-        s.sendall(texte_envoyer.encode())
-
-
+        if envoie_pos_joue:
+            if pos_joue != '-1':
+                s.sendall(pos_joue.encode())
+                pos_joue = '-1'
     s.close()
+
+def envoie_pos_joue(col):
+    global pos_joue
+    pos_joue = str(col)
