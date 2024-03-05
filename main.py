@@ -2,7 +2,7 @@ import time
 from tkinter import *
 import tkinter.font as tkFont
 from board import *
-
+from client import *
 
 def colorie_tableau(tableau):
     """
@@ -257,8 +257,18 @@ def affiche_rejoindre_partie_en_ligne():
 
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
-    title_label.grid()
+    title_label.grid(row=0, column=1, columnspan=3, sticky=EW)
 
+    text_label = Label(window, text="IP du serveur :", font=("Courrier", 30), bg='#7092BE', fg='white', pady=30)
+    text_label.grid(row=2, column=1)
+
+    entree = StringVar()
+    entry = Entry(window, font = ("Courrier",48), bg='#7092BE', fg='white', textvariable=entree)
+    entry.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
+    entry.focus()
+
+    connect_button = Button(window, text="Connect", bg='white', fg='black', command=lambda ip=entree: connect(ip))
+    connect_button.grid(row=3, column=2, columnspan = 2, sticky=S)
 
 def jeu_local():
 
