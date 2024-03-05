@@ -4,7 +4,7 @@ import tkinter.font as tkFont
 from board import *
 from client import *
 from serveur import *
-
+import threading
 def colorie_tableau(tableau):
     """
     paramètres : tableau numpy de dimensions 6,7
@@ -249,11 +249,13 @@ def affiche_partie_en_ligne():
 def affiche_creer_en_ligne():
 
     clear()
-    creer_serveur()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
                         pady=30)
     title_label.grid()
-
+    thread_creer_partie = threading.Thread(target=creer_serveur)
+    thread_lance_jeu = threading.Thread(target=jeu_en_ligne)
+    thread_lance_jeu.start()
+    thread_creer_partie.start()
 
 
 def affiche_rejoindre_partie_en_ligne():
@@ -336,6 +338,24 @@ def jeu_local_ordi_difficile():
         for j in range(7):
             button = Button(frame, image=image_vide, width=100, height=102, bg="white",
                             command=lambda row=i, col=j: on_button_click_ordi_difficile(row, col), bd=0, highlightthickness=0)
+            button.image = image_vide
+            button.grid(row=i, column=j)
+            buttons[i][j] = button
+    frame.pack(side=BOTTOM)
+    designe_joueur()
+    window.grid_columnconfigure(1, weight=0)
+    window.grid_columnconfigure(2, weight=0)
+    window.grid_columnconfigure(3, weight=0)
+
+def jeu_en_ligne():
+    window.update()
+    clear()
+    frame = Frame(window, bg='#7092BE')
+    image_vide = PhotoImage(file="image/case_vide.png")
+    for i in range(6):
+        for j in range(7):
+            button = Button(frame, image=image_vide, width=100, height=102, bg="white",
+                            command=lambda row=i, col=j: on_button_click(row, col), bd=0, highlightthickness=0)
             button.image = image_vide
             button.grid(row=i, column=j)
             buttons[i][j] = button
