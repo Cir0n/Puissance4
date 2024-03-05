@@ -1,17 +1,25 @@
 import socket
-HOST_IP = "127.0.0.1"
+import time
+HOST_IP = "10.2.110.47"
 HOST_PORT = 32000
-
-s = socket.socket()                 #création socket d'écoute
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)             #Permet d'éviter une erreur qui dit que localhost est déjà utiliser
-s.bind((HOST_IP,HOST_PORT))          #ecoute sur le port 32000
+MAX_DATA_SIZE = 1024
+s = socket.socket()
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind((HOST_IP,HOST_PORT))
 s.listen()
-print("attente de connexion sur ", HOST_IP, "port ", HOST_PORT)
-connectionScoket, clientAddress = s.accept()   #fonction bloquante qui retourne des infos sur le client
-print(f"connexion établie avec {clientAddress}")
+
+print(f"Attente de connection sur {HOST_IP}, port {HOST_PORT} ")
+connection_socket, client_address = s.accept()
+print(f"Connexion établie avec {client_address}")
 
 
+while True :
+    text_envoye = input("Vous : ")
+    connection_socket.sendall(text_envoye.encode())
+    data_recue = connection_socket.recv(MAX_DATA_SIZE)
+    if not data_recue:
+        break
+    print(f"Message : {data_recue.decode()}")
 
-
-
-
+s.close()
+connection_socket.close()
