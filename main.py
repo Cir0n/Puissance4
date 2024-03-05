@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter.font as tkFont
 from board import *
 from client import *
+from serveur import *
 
 def colorie_tableau(tableau):
     """
@@ -248,9 +249,11 @@ def affiche_partie_en_ligne():
 def affiche_creer_en_ligne():
 
     clear()
+    creer_serveur()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
                         pady=30)
     title_label.grid()
+
 
 
 def affiche_rejoindre_partie_en_ligne():
