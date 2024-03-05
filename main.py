@@ -32,7 +32,7 @@ def stop_buttons():
     for i in range(6):
         for j in range(7):
             button = buttons[i][j]
-            button.configure(command=print)
+            button.configure(command=0)
     window.update()
 
 

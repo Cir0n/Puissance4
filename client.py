@@ -34,7 +34,7 @@ def connect(ip):
             global pos_joue
             pos_joue = '-1'
             if envoie_pos_joue_client:
-                time.sleep(0.01)
+                time.sleep(0.05)
                 if pos_joue != '-1':
                     s.sendall(pos_joue.encode())
                     pos_joue = '-1'

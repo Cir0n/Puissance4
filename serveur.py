@@ -26,7 +26,7 @@ def creer_serveur():
         while True:
             pos_joue = '-1'
             if envoie_pos_joue_serveur:
-                time.sleep(0.01)
+                time.sleep(0.05)
                 if pos_joue != '-1':
                     connection_socket.sendall(pos_joue.encode())
                     pos_joue = '-1'
