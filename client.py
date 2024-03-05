@@ -1,7 +1,7 @@
 import socket
 import time
 
-HOST_IP = "127.0.0.1"
+HOST_IP = "10.2.110.39"
 HOST_PORT = 32000
 MAX_DATA_SIZE = 1024
 

@@ -1,6 +1,11 @@
 import socket
+import subprocess
 import time
-HOST_IP = "10.2.110.47"
+
+hostname = subprocess.check_output("hostname", shell=True).decode()
+hostname = hostname[:-2]
+IP = socket.gethostbyname(hostname)
+HOST_IP = str(IP)
 HOST_PORT = 32000
 MAX_DATA_SIZE = 1024
 s = socket.socket()
