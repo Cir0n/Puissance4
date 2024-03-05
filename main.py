@@ -5,6 +5,8 @@ from board import *
 from client import *
 from serveur import *
 import threading
+
+
 def colorie_tableau(tableau):
     """
     paramètres : tableau numpy de dimensions 6,7
@@ -33,6 +35,7 @@ def stop_buttons():
             button.configure(command=print)
     window.update()
 
+
 def activate_buttons(lvl):
     for i in range(6):
         for j in range(7):
@@ -46,8 +49,12 @@ def activate_buttons(lvl):
             elif lvl == 3:
                 button.configure(command=lambda row=i, col=j: on_button_click_ordi_difficile(row, col))
             elif lvl == 4:
-                button.configure(command=lambda row=i, col=j: on_button_click_online(row, col))
+                button.configure(command=lambda row=i, col=j: on_button_click_online_serveur(row, col))
+            elif lvl == 5:
+                button.configure(command=lambda row=i, col=j: on_button_click_online_client(row, col))
+                #stop_buttons()
             window.update()
+
 
 def on_button_click(row, col):
     """
@@ -67,7 +74,8 @@ def on_button_click(row, col):
             time.sleep(1.5)
             afficher_gagnant(gagnant)
 
-def on_button_click_online(row, col):
+
+def on_button_click_online_serveur(row, col):
     """
     fonction du bouton qui renvoie la position du bouton
     """
@@ -80,7 +88,27 @@ def on_button_click_online(row, col):
         print(tableau)
         colorie_tableau(tableau)
         designe_joueur()
-        envoie_pos_joue(col) #envoie à l'adversaire la pos jouée
+        envoie_pos_joue_serveur(col)  # envoie à l'adversaire la pos jouée
+        stop_buttons()
+        if gagnant is not None:
+            stop_buttons()
+            time.sleep(1.5)
+            afficher_gagnant(gagnant)
+
+def on_button_click_online_client(row, col):
+    """
+    fonction du bouton qui renvoie la position du bouton
+    """
+    global tableau
+    print(f"Bouton cliqué en {row} {col}")
+    tmp = np.array(tableau)
+    tmp, gagnant = jouer(tmp, col)
+    if not np.array_equal(tmp, tableau):
+        tableau = tmp
+        print(tableau)
+        colorie_tableau(tableau)
+        designe_joueur()
+        envoie_pos_joue_client(col)  # envoie à l'adversaire la pos jouée
         stop_buttons()
         if gagnant is not None:
             stop_buttons()
@@ -116,6 +144,7 @@ def on_button_click_ordi_facile(row, col):
                 time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
+
 def on_button_click_ordi_moyen(row, col):
     global tableau
     print(f"Bouton cliqué en {row} {col}")
@@ -141,6 +170,7 @@ def on_button_click_ordi_moyen(row, col):
                 time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
+
 def on_button_click_ordi_difficile(row, col):
     global tableau
     print(f"Bouton cliqué en {row} {col}")
@@ -165,8 +195,6 @@ def on_button_click_ordi_difficile(row, col):
                 stop_buttons()
                 time.sleep(1.5)
                 afficher_gagnant(gagnant)
-
-
 
 
 def clear():
@@ -243,19 +271,19 @@ def affiche_partie_ordi():
     font_style = tkFont.Font(family='Courier', size=20)
 
     facile_button = Button(window, text="Facile", command=lambda lvl=1: jeu(lvl), font=font_style,
-                          width=20, pady=20, bd=0, highlightthickness=0)
+                           width=20, pady=20, bd=0, highlightthickness=0)
     facile_button.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
 
     moyen_button = Button(window, text="Moyen", command=lambda lvl=2: jeu(lvl),
-                           font=font_style, width=20, pady=20, bd=0, highlightthickness=0)
+                          font=font_style, width=20, pady=20, bd=0, highlightthickness=0)
     moyen_button.grid(row=3, column=2, columnspan=1, sticky=EW, pady=15)
 
     difficile_button = Button(window, text="Difficile", command=lambda lvl=3: jeu(lvl), font=font_style,
-                         width=20, pady=20, bd=0, highlightthickness=0)
+                              width=20, pady=20, bd=0, highlightthickness=0)
     difficile_button.grid(row=4, column=2, columnspan=1, sticky=EW, pady=15)
 
     retour_button = Button(window, text="Retour", command=affiche_partie_locale, pady=20, fg='black', bd=0,
-                         highlightthickness=0, font=font_style)
+                           highlightthickness=0, font=font_style)
     retour_button.grid(row=5, column=2, columnspan=1, sticky=EW, pady=35, padx=40)
 
 
@@ -282,7 +310,6 @@ def affiche_partie_en_ligne():
 
 
 def affiche_creer_en_ligne():
-
     clear()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
                         pady=30)
@@ -292,9 +319,7 @@ def affiche_creer_en_ligne():
     thread_lance_jeu.start()
     thread_creer_partie.start()
 
-
 def affiche_rejoindre_partie_en_ligne():
-
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=0, column=1, columnspan=3, sticky=EW)
@@ -303,21 +328,22 @@ def affiche_rejoindre_partie_en_ligne():
     text_label.grid(row=2, column=1)
 
     entree = StringVar()
-    entry = Entry(window, font = ("Courrier",48), bg='#7092BE', fg='white', textvariable=entree)
+    entry = Entry(window, font=("Courrier", 48), bg='#7092BE', fg='white', textvariable=entree)
     entry.grid(row=2, column=2, columnspan=1, sticky=EW, pady=15)
     entry.focus()
 
-    connect_button = Button(window, text="Connect", bg='white', fg='black', command=lambda ip=entree: rejoindre_partie(ip))
-    connect_button.grid(row=3, column=2, columnspan = 2, sticky=S)
+    connect_button = Button(window, text="Connect", bg='white', fg='black',
+                            command=lambda ip=entree: rejoindre_partie(ip))
+    connect_button.grid(row=3, column=2, columnspan=2, sticky=S)
+
 
 def rejoindre_partie(ip):
     thread_rejoindre_partie = threading.Thread(target=connect, args=(ip,))
-    thread_lance_jeu = threading.Thread(target=jeu, args=(4,))
+    thread_lance_jeu = threading.Thread(target=jeu, args=(5,))
     thread_rejoindre_partie.start()
     thread_lance_jeu.start()
-    set_joueur(2)
-def jeu(lvl):
 
+def jeu(lvl):
     clear()
     frame = Frame(window, bg='#7092BE')
     image_vide = PhotoImage(file="image/case_vide.png")
@@ -335,6 +361,7 @@ def jeu(lvl):
     window.grid_columnconfigure(2, weight=0)
     window.grid_columnconfigure(3, weight=0)
 
+
 def afficher_gagnant(joueur):
     colorie_tableau(tableau)
     clear()
@@ -350,28 +377,27 @@ def afficher_gagnant(joueur):
     recommencer_partie()
 
 
-
 def recommencer_partie():
-
     global tableau
     global tour
-    tableau = np.zeros([6,7])
+    tableau = np.zeros([6, 7])
     tour = 0
     reinitialiser_joueur()
 
-def designe_joueur():
 
-    #Afficher tour du joueur
+def designe_joueur():
+    # Afficher tour du joueur
     for l, i in enumerate(window.slaves()):
         if l == 1:
             i.destroy()
             break
     joueur = get_joueur()
-    title_frame= Frame(window, bg='#7092BE')
+    title_frame = Frame(window, bg='#7092BE')
     text = f"tour du Joueur : {joueur}"
     designe_tour = Label(title_frame, text=text, font=("Courrier", 30), bg='#7092BE', fg='white', pady=30)
     designe_tour.pack()
     title_frame.pack(side=TOP)
+
 
 # Configurations de la fenetre puissance 4
 window = Tk()
