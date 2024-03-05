@@ -60,7 +60,6 @@ def att_adversaire_joue_client():
         coup_adversaire = get_data_client()
         if coup_adversaire != None:
             coup_adversaire = int(coup_adversaire.decode())
-            print(type(coup_adversaire), coup_adversaire)
             activate_buttons(5)
             tmp = np.array(tableau)
             tmp, gagnant = jouer(tmp, coup_adversaire)
@@ -75,7 +74,6 @@ def att_adversaire_joue_client():
                     break
                 break
             break
-    print('stop thread client')
     return
 
 def att_adversaire_joue_serveur():
@@ -84,7 +82,6 @@ def att_adversaire_joue_serveur():
         coup_adversaire = get_data_serveur()
         if coup_adversaire != None:
             coup_adversaire = int(coup_adversaire.decode())
-            print(type(coup_adversaire), coup_adversaire)
             activate_buttons(4)
             tmp = np.array(tableau)
             tmp, gagnant = jouer(tmp, coup_adversaire)
@@ -99,7 +96,6 @@ def att_adversaire_joue_serveur():
                     break
                 break
             break
-    print('stop thread serveur')
     return
 
 

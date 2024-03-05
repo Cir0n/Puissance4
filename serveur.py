@@ -39,7 +39,6 @@ def creer_serveur():
             print(f"Message : {data_recue.decode()}")
             break
         data_recue = None
-
     s.close()
     connection_socket.close()
 
