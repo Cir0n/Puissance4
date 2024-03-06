@@ -25,7 +25,7 @@ def colorie_tableau(tableau):
             elif tableau[i][j] == 2:
                 button.configure(image=image_jaune, width=100, height=102, bd=0, highlightthickness=0)
                 button.image = image_jaune
-        window.update()
+        window.update() #update la fenêtre
 
 
 def stop_buttons():
@@ -70,7 +70,6 @@ def att_adversaire_joue_client():
                 if gagnant is not None:
                     stop_buttons()
                     afficher_gagnant(gagnant)
-                    time.sleep(1.5)
                     break
                 break
             break
@@ -92,7 +91,6 @@ def att_adversaire_joue_serveur():
                 if gagnant is not None:
                     stop_buttons()
                     afficher_gagnant(gagnant)
-                    time.sleep(1.5)
                     break
                 break
             break
@@ -114,7 +112,6 @@ def on_button_click(row, col):
         designe_joueur()
         if gagnant is not None:
             stop_buttons()
-            time.sleep(1.5)
             afficher_gagnant(gagnant)
 
 
@@ -135,7 +132,6 @@ def on_button_click_online_serveur(row, col):
         stop_buttons()
         if gagnant is not None:
             stop_buttons()
-            time.sleep(1.5)
             afficher_gagnant(gagnant)
         thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_serveur)
         thread_attente_adversaire.start()
@@ -158,7 +154,6 @@ def on_button_click_online_client(row, col):
         stop_buttons()
         if gagnant is not None:
             stop_buttons()
-            time.sleep(1.5)
             afficher_gagnant(gagnant)
         thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_client)
         thread_attente_adversaire.start()
@@ -179,7 +174,6 @@ def on_button_click_ordi_facile(row, col):
         colorie_tableau(tableau)
         if gagnant is not None:
             stop_buttons()
-            time.sleep(1.5)
             afficher_gagnant(gagnant)
         else:
             tmp, gagnant = ordi_facile_joue(tableau)
@@ -189,7 +183,6 @@ def on_button_click_ordi_facile(row, col):
             colorie_tableau(tableau)
             if gagnant is not None:
                 stop_buttons()
-                time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
 
@@ -205,7 +198,6 @@ def on_button_click_ordi_moyen(row, col):
         colorie_tableau(tableau)
         if gagnant is not None:
             stop_buttons()
-            time.sleep(1.5)
             afficher_gagnant(gagnant)
         else:
             tmp, gagnant = ordi_moyen_joue(tableau)
@@ -215,7 +207,6 @@ def on_button_click_ordi_moyen(row, col):
             colorie_tableau(tableau)
             if gagnant is not None:
                 stop_buttons()
-                time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
 
@@ -231,7 +222,6 @@ def on_button_click_ordi_difficile(row, col):
         colorie_tableau(tableau)
         if gagnant is not None:
             stop_buttons()
-            time.sleep(1.5)
             afficher_gagnant(gagnant)
         else:
             tmp, gagnant = ordi_difficile_joue(tableau)
@@ -241,7 +231,6 @@ def on_button_click_ordi_difficile(row, col):
             colorie_tableau(tableau)
             if gagnant is not None:
                 stop_buttons()
-                time.sleep(1.5)
                 afficher_gagnant(gagnant)
 
 
@@ -358,16 +347,32 @@ def affiche_partie_en_ligne():
 
 
 def affiche_creer_en_ligne():
+    """
+
+    :return:
+    """
     clear()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
                         pady=30)
-    title_label.grid()
+    title_label.grid(row=0, column=0)
+    hostname = subprocess.check_output("hostname", shell=True).decode()
+    hostname = hostname[:-2]
+    IP = socket.gethostbyname(hostname)
+    text_label = Label(window, text="IP du serveur :", font=("Courrier", 30), bg='#7092BE', fg='white', pady=30)
+    text_label.grid(row=1, column=0)
+    ip_label = Label(window, text=str(IP), font=("Courrier", 30), bg='#7092BE', fg='white', pady=30)
+    ip_label.grid(row=1, column=1)
     thread_creer_partie = threading.Thread(target=creer_serveur)
     thread_lance_jeu = threading.Thread(target=jeu, args=(4,))
-    thread_lance_jeu.start()
     thread_creer_partie.start()
+    while is_there_connection() == None:
+        window.update()
+    thread_lance_jeu.start()
 
 def affiche_rejoindre_partie_en_ligne():
+    """
+    affichage du menu pour rejoindre une partie en mettant l'adresse ip de l'host
+    """
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=0, column=1, columnspan=3, sticky=EW)
@@ -386,12 +391,20 @@ def affiche_rejoindre_partie_en_ligne():
 
 
 def rejoindre_partie(ip):
+    """
+    lance la thread côté client pour se connecter à l'host
+    puis lance une thread d'affichage du jeu
+    """
     thread_rejoindre_partie = threading.Thread(target=connect, args=(ip,))
     thread_lance_jeu = threading.Thread(target=jeu, args=(5,))
     thread_rejoindre_partie.start()
     thread_lance_jeu.start()
 
 def jeu(lvl):
+    """
+    fonction d'affichage du jeu
+    prend en paramètre lvl pour changer les boutons et/ou les désactiver
+    """
     clear()
     frame = Frame(window, bg='#7092BE')
     image_vide = PhotoImage(file="image/case_vide.png")
@@ -415,7 +428,16 @@ def jeu(lvl):
 
 
 def afficher_gagnant(joueur):
+    """
+    prend en paramètre le joueur actuel
+    colorie le tableau
+    attends 1.5 secondes pour montrer comment le joueur a gagné
+    puis clear la fenêtre et affiche le gagnant ou le cas d'égalité
+    et enfin lance la fonction pour réinitialiser la partie
+    """
     colorie_tableau(tableau)
+    window.update()
+    time.sleep(1.5)
     clear()
     font_style = tkFont.Font(family='Courier', size=20)
     text = f"Joueur {joueur} a gagné"
@@ -430,6 +452,11 @@ def afficher_gagnant(joueur):
 
 
 def recommencer_partie():
+    """
+    récupère le tableau et tour en variable global
+    les remets à leurs valeurs initiales
+    et lance la facontion pour réinitialiser le joueur
+    """
     global tableau
     global tour
     tableau = np.zeros([6, 7])
@@ -438,7 +465,10 @@ def recommencer_partie():
 
 
 def designe_joueur():
-    # Afficher tour du joueur
+    """
+    Détruit l'ancien 'Tour joueur : '
+    récupère le joueur actuel et re écrit
+    """
     for l, i in enumerate(window.slaves()):
         if l == 1:
             i.destroy()
@@ -459,12 +489,14 @@ window.geometry("1080x720")
 window.minsize(720, 480)
 window.config(background='#7092BE')
 
+#configuration des colonnes pour les menus
 window.grid_columnconfigure(1, weight=1)
 window.grid_columnconfigure(2, weight=1)
 window.grid_columnconfigure(3, weight=1)
 
+#liste de boutons qui seront les cases pour jouer
 buttons = [[None for _ in range(7)] for _ in range(6)]
 
+# Afficher la fenêtre sur le menu
 affiche_menu()
-# Afficher la fenêtre
 window.mainloop()

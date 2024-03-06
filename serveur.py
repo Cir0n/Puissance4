@@ -3,9 +3,11 @@ import subprocess
 import time
 pos_joue = '-1'
 data_recue = None
+connection_socket = None
 def creer_serveur():
     global pos_joue
     global data_recue
+    global connection_socket
     hostname = subprocess.check_output("hostname", shell=True).decode()
     hostname = hostname[:-2]
     IP = socket.gethostbyname(hostname)
@@ -49,3 +51,7 @@ def envoie_pos_joue_serveur(col):
 def get_data_serveur():
     global data_recue
     return data_recue
+
+def is_there_connection():
+    global connection_socket
+    return connection_socket
