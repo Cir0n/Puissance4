@@ -8,7 +8,9 @@ connection_socket = None
 
 def creer_serveur():
     """
-    fonction qui crée le serveur, attend une connexion
+    Fonction qui crée le serveur, attend une connexion
+    crée une boucle pour le jeu, attends jusqu'à ce que le serveur joue
+    puis attends jusqu'à recevoir le coup de l'adversaire
     :return:
     """
     global pos_joue
@@ -54,17 +56,22 @@ def creer_serveur():
 
 def envoie_pos_joue_serveur(col):
     """
-
-    :param col:
-    :return:
+    :paramètre colonne sur laquelle le joueur à jouer
+    Fonction qui permet de récupérer et convertir en string (afin de l'envoyer) la colonne jouer
     """
     global pos_joue
     pos_joue = str(col)
 
 def get_data_serveur():
+    """
+    Récupère les données reçues
+    """
     global data_recue
     return data_recue
 
 def is_there_connection():
+    """
+    Vérifie s'il y a une connection sur le serveur
+    """
     global connection_socket
     return connection_socket

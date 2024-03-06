@@ -6,9 +6,15 @@ HOST_PORT = 32000
 MAX_DATA_SIZE = 1024
 pos_joue = '-1'
 data_recue = None
+
 def connect(ip):
+    """
+
+    :param IP de l'host
+    :return false
+    """
     global data_recue
-    HOST_IP = ip.get()
+    HOST_IP = ip
     print(f"Connexion au server {HOST_IP}, port {HOST_PORT}")
     while True :
         try :
@@ -34,7 +40,7 @@ def connect(ip):
             global pos_joue
             pos_joue = '-1'
             if envoie_pos_joue_client:
-                time.sleep(0.05) # limitation d'envoi des données à 20tps
+                time.sleep(0.05)  # Limitation d'envoi des données à 20tps
                 if pos_joue != '-1':
                     s.sendall(pos_joue.encode())
                     pos_joue = '-1'
@@ -42,9 +48,16 @@ def connect(ip):
     s.close()
 
 def envoie_pos_joue_client(col):
+    """
+    :paramètre colonne sur laquelle le joueur à jouer
+    Fonction qui permet de récupérer et convertir en string (afin de l'envoyer) la colonne jouer
+    """
     global pos_joue
     pos_joue = str(col)
 
 def get_data_client():
+    """
+    Récupère les données reçues
+    """
     global data_recue
     return data_recue
