@@ -61,9 +61,13 @@ def att_adversaire_joue_online(lvl):
     """
     global tableau
     while True:
-        coup_adversaire = get_data_serveur()
+        if lvl == 4:
+            coup_adversaire = get_data_serveur()
+        elif lvl == 5:
+            coup_adversaire = get_data_client()
         if coup_adversaire != None:
             coup_adversaire = int(coup_adversaire.decode())
+            print(coup_adversaire)
             if lvl == 4:
                 activate_buttons(4)
             elif lvl == 5:

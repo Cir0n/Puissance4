@@ -14,7 +14,7 @@ def connect(ip):
     :return false
     """
     global data_recue
-    HOST_IP = ip
+    HOST_IP = ip.get()
     print(f"Connexion au server {HOST_IP}, port {HOST_PORT}")
     while True :
         try :
