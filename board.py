@@ -26,7 +26,7 @@ def verification(tableau, joueur):
                     tableau[j, i + 3] == joueur:
                 return True
 
-    # Vérifie verticalement si 4 pions sont aligner
+    # Vérifie verticalement si 4 pions sont aligné
     for i in range(tableau.shape[1]):
         for j in range(tableau.shape[0] - 3):
             if tableau[j, i] == joueur and tableau[j + 1, i] == joueur and tableau[j + 2, i] == joueur and \
@@ -68,9 +68,9 @@ def validite(tableau, position_jouer):
     return False
 
 
-def jouer(t, entrerJoueur):
+def jouer(board, entrerJoueur):
     """
-    paramètres : la position à jouer; le joueur actuel; tableau numpy de dimensions 6,7
+    paramètres : la position à jouer ; le joueur actuel ; tableau numpy de dimensions 6,7
     renvoie la modification du tableau
 
     demande l'entrée du joueur
@@ -81,40 +81,57 @@ def jouer(t, entrerJoueur):
     global joueur
     global tour
     global coups_produits
-    if validite(t, entrerJoueur):
-        for i in range(t.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
-            if t[i, entrerJoueur] == 0:
-                t[i, entrerJoueur] = joueur
+    if validite(board, entrerJoueur):
+        for i in range(board.shape[0] - 1, -1, -1):  # Loop from the bottom of the column
+            if board[i, entrerJoueur] == 0:
+                board[i, entrerJoueur] = joueur
                 coups_produits += str(entrerJoueur+1)
                 tour += 1
                 if tour >= 7:
-                    if verification(t, joueur):
+                    if verification(board, joueur):
                         print("Joueur", joueur, "a gagné !")
-                        return t, joueur
-                    elif egalite(t):
+                        return board, joueur
+                    elif egalite(board):
                         print("Égalité !")
-                        return t, "égalité"
+                        return board, "égalité"
                 joueur = (2 if joueur == 1 else 1)
-                return t, None
+                return board, None
     else:
         print("position invalide")
-    return t, None
+    return board, None
 
 def reinitialiser_joueur():
+    """
+    Remet le joueur à l'état initial
+    """
     global joueur
     global coups_produits
     joueur = 1
     coups_produits = ''
 
 def get_joueur():
+    """
+    return le joueur, 1 ou 2
+    """
     return joueur
 
 def set_joueur(j):
+    """
+    paramètre : un numéros de joueur (1 ou 2)
+    Modifie le joueur
+    :param j:
+    """
     global joueur
     joueur = j
 
 
 def coup_gagnant(tableau, joueur):
+    """
+
+    :paramètres : un tableau de jeu ; un joueur.
+
+    :return: i, le coup gagnant ; -1 si pas de coup gagnant.
+    """
     for i in range(7):
         tableau_tmp = np.array(tableau)
         if validite(tableau_tmp, joueur):
@@ -129,6 +146,11 @@ def coup_gagnant(tableau, joueur):
 
 
 def ordi_facile_joue(tableau):
+    """
+    :paramètre:  tableau
+    IA niveau facile, elle récupère la liste des coups possibles et joue un coup aléatoire dans cette liste
+    :return: le coup que l'IA doit jouer.
+    """
     global joueur
     joueur = 2
     coups_possibles = []
@@ -139,6 +161,11 @@ def ordi_facile_joue(tableau):
     return jouer(tableau, coup)
 
 def ordi_moyen_joue(tableau):
+    """
+    :paramètre tableau
+    IA niveau moyen, vérifie si elle peu gagner, si oui, elle joue, sinon elle vérifie si l'adversaire peut gagner, si oui, elle le bloque, sinon elle joue aléatoiremet.
+    :return: Le coup à jouer.
+    """
     global joueur
     joueur = 2
     coup_gagnant_ordi = coup_gagnant(tableau, joueur)
@@ -156,6 +183,11 @@ def ordi_moyen_joue(tableau):
         return jouer(tableau, coup)
 
 def ordi_difficile_joue(tableau):
+    """
+    :paramètre: tableau
+    IA niveau difficile, elle utilise l'algorithme minimax avec une profondeur maximale, on utilise une API pour récupérer cette algorithme afin d'optimiser la latence de jeu.
+    :return: le coup a jouer
+    """
     global joueur
     joueur = 2
     req = SERVER + coups_produits

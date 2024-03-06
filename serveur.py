@@ -1,10 +1,16 @@
 import socket
 import subprocess
 import time
+
 pos_joue = '-1'
 data_recue = None
 connection_socket = None
+
 def creer_serveur():
+    """
+    fonction qui crée le serveur, attend une connexion
+    :return:
+    """
     global pos_joue
     global data_recue
     global connection_socket
@@ -28,7 +34,7 @@ def creer_serveur():
         while True:
             pos_joue = '-1'
             if envoie_pos_joue_serveur:
-                time.sleep(0.05)
+                time.sleep(0.05) # limitation d'envoi des données à 20tps
                 if pos_joue != '-1':
                     connection_socket.sendall(pos_joue.encode())
                     pos_joue = '-1'
@@ -36,15 +42,22 @@ def creer_serveur():
         while True:
             data_recue = connection_socket.recv(MAX_DATA_SIZE)
             if not data_recue:
-                continu = False
+                continu = False             # Fait un double break pour couper la connexion
                 break
             print(f"Message : {data_recue.decode()}")
             break
         data_recue = None
-    s.close()
+
     connection_socket.close()
+    s.close()
+
 
 def envoie_pos_joue_serveur(col):
+    """
+
+    :param col:
+    :return:
+    """
     global pos_joue
     pos_joue = str(col)
 

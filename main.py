@@ -27,61 +27,47 @@ def colorie_tableau(tableau):
                 button.image = image_jaune
         window.update() #update la fenêtre
 
-
 def stop_buttons():
+    """
+    Empêche le clique des bouttons (cases) lors d'une partie
+    :return:
+    """
     for i in range(6):
         for j in range(7):
             button = buttons[i][j]
             button.configure(command=0)
     window.update()
 
-
 def activate_buttons(lvl):
+    """
+    :paramètre lvl (indique si on joue en local, contre l'ordinateur ou en ligne).
+    Permet de configurer la fonction lancée par les boutons lorsqu'on clique sur un bouton
+    """
     for i in range(6):
         for j in range(7):
             button = buttons[i][j]
             if lvl == 0:
                 button.configure(command=lambda row=i, col=j: on_button_click(row, col))
-            elif lvl == 1:
-                button.configure(command=lambda row=i, col=j: on_button_click_ordi_facile(row, col))
-            elif lvl == 2:
-                button.configure(command=lambda row=i, col=j: on_button_click_ordi_moyen(row, col))
-            elif lvl == 3:
-                button.configure(command=lambda row=i, col=j: on_button_click_ordi_difficile(row, col))
-            elif lvl == 4:
-                button.configure(command=lambda row=i, col=j: on_button_click_online_serveur(row, col))
-            elif lvl == 5:
-                button.configure(command=lambda row=i, col=j: on_button_click_online_client(row, col))
+            elif lvl >= 1 and lvl <=3:
+                button.configure(command=lambda row=i, col=j: on_button_click_ordi(row, col, lvl))
+            elif lvl == 4 or lvl == 5:
+                button.configure(command=lambda row=i, col=j: on_button_click_online(row, col, lvl))
             window.update()
 
-def att_adversaire_joue_client():
-    global tableau
-    while True:
-        coup_adversaire = get_data_client()
-        if coup_adversaire != None:
-            coup_adversaire = int(coup_adversaire.decode())
-            activate_buttons(5)
-            tmp = np.array(tableau)
-            tmp, gagnant = jouer(tmp, coup_adversaire)
-            if not np.array_equal(tmp, tableau):
-                tableau = tmp
-                colorie_tableau(tableau)
-                designe_joueur()
-                if gagnant is not None:
-                    stop_buttons()
-                    afficher_gagnant(gagnant)
-                    break
-                break
-            break
-    return
-
-def att_adversaire_joue_serveur():
+def att_adversaire_joue_online(lvl):
+    """
+    :paramètre lvl (indique si on joue en local, contre l'ordinateur ou en ligne).
+    en Online permet d'attendre que le joueur opposé est jouer pour reactiver les boutton et jouer à son tour
+    """
     global tableau
     while True:
         coup_adversaire = get_data_serveur()
         if coup_adversaire != None:
             coup_adversaire = int(coup_adversaire.decode())
-            activate_buttons(4)
+            if lvl == 4:
+                activate_buttons(4)
+            elif lvl == 5:
+                activate_buttons(5)
             tmp = np.array(tableau)
             tmp, gagnant = jouer(tmp, coup_adversaire)
             if not np.array_equal(tmp, tableau):
@@ -99,7 +85,9 @@ def att_adversaire_joue_serveur():
 
 def on_button_click(row, col):
     """
-    fonction du bouton qui renvoie la position du bouton
+    paramètres : row et col qui sont la position du boutons dans la liste de boutons
+
+    La fonction permet de faire jouer le joueur quand il clique sur un bouton et vérifie la possibilité de jouer
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
@@ -115,9 +103,13 @@ def on_button_click(row, col):
             afficher_gagnant(gagnant)
 
 
-def on_button_click_online_serveur(row, col):
+def on_button_click_online(row, col, lvl):
     """
-    fonction du bouton qui renvoie la position du bouton
+    paramètres : row et col qui sont la position du boutons dans la liste de boutons
+    ansi que lvl qui décrit si le joueur est client ou serveur
+
+    La fonction permet de faire jouer le joueur quand il clique sur un bouton et vérifie la possibilité de jouer
+    mais en ligne
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
@@ -128,40 +120,27 @@ def on_button_click_online_serveur(row, col):
         print(tableau)
         colorie_tableau(tableau)
         designe_joueur()
-        envoie_pos_joue_serveur(col)  # envoie à l'adversaire la pos jouée
+        if lvl == 4:
+            envoie_pos_joue_serveur(col)  # envoie à l'adversaire la pos jouée
+        elif lvl == 5:
+            envoie_pos_joue_client(col)   # envoie à l'adversaire la pos jouée
         stop_buttons()
         if gagnant is not None:
             stop_buttons()
             afficher_gagnant(gagnant)
-        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_serveur)
-        thread_attente_adversaire.start()
+        if lvl == 4:
+            thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_online, args=(lvl,))
+            thread_attente_adversaire.start()
+        elif lvl == 5:
+            thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_online, args=(lvl,))
+            thread_attente_adversaire.start()
 
-
-def on_button_click_online_client(row, col):
+def on_button_click_ordi(row, col, lvl):
     """
-    fonction du bouton qui renvoie la position du bouton
-    """
-    global tableau
-    print(f"Bouton cliqué en {row} {col}")
-    tmp = np.array(tableau)
-    tmp, gagnant = jouer(tmp, col)
-    if not np.array_equal(tmp, tableau):
-        tableau = tmp
-        print(tableau)
-        colorie_tableau(tableau)
-        designe_joueur()
-        envoie_pos_joue_client(col)  # envoie à l'adversaire la pos jouée
-        stop_buttons()
-        if gagnant is not None:
-            stop_buttons()
-            afficher_gagnant(gagnant)
-        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_client)
-        thread_attente_adversaire.start()
+    paramètres : row et col qui sont la position du boutons dans la liste de boutons
+    ansi que lvl qui décrit qu'elle ia joue
 
-
-def on_button_click_ordi_facile(row, col):
-    """
-    fonction du bouton qui renvoie la position du bouton
+    La fonction permet de faire jouer le joueur quand il clique sur un bouton et vérifie la possibilité de jouer
     """
     global tableau
     print(f"Bouton cliqué en {row} {col}")
@@ -176,7 +155,12 @@ def on_button_click_ordi_facile(row, col):
             stop_buttons()
             afficher_gagnant(gagnant)
         else:
-            tmp, gagnant = ordi_facile_joue(tableau)
+            if lvl == 1:
+                tmp, gagnant = ordi_facile_joue(tableau)
+            elif lvl == 2:
+                tmp, gagnant = ordi_moyen_joue(tableau)
+            elif lvl == 3:
+                tmp, gagnant = ordi_difficile_joue(tableau)
             designe_joueur()
             if np.array_equal(tmp, tableau):
                 tableau = tmp
@@ -184,59 +168,10 @@ def on_button_click_ordi_facile(row, col):
             if gagnant is not None:
                 stop_buttons()
                 afficher_gagnant(gagnant)
-
-
-def on_button_click_ordi_moyen(row, col):
-    global tableau
-    print(f"Bouton cliqué en {row} {col}")
-    tmp = np.array(tableau)
-    tmp, gagnant = jouer(tmp, col)
-    if not np.array_equal(tmp, tableau):
-        tableau = tmp
-        print(tableau)
-        designe_joueur()
-        colorie_tableau(tableau)
-        if gagnant is not None:
-            stop_buttons()
-            afficher_gagnant(gagnant)
-        else:
-            tmp, gagnant = ordi_moyen_joue(tableau)
-            designe_joueur()
-            if np.array_equal(tmp, tableau):
-                tableau = tmp
-            colorie_tableau(tableau)
-            if gagnant is not None:
-                stop_buttons()
-                afficher_gagnant(gagnant)
-
-
-def on_button_click_ordi_difficile(row, col):
-    global tableau
-    print(f"Bouton cliqué en {row} {col}")
-    tmp = np.array(tableau)
-    tmp, gagnant = jouer(tmp, col)
-    if not np.array_equal(tmp, tableau):
-        tableau = tmp
-        print(tableau)
-        designe_joueur()
-        colorie_tableau(tableau)
-        if gagnant is not None:
-            stop_buttons()
-            afficher_gagnant(gagnant)
-        else:
-            tmp, gagnant = ordi_difficile_joue(tableau)
-            designe_joueur()
-            if np.array_equal(tmp, tableau):
-                tableau = tmp
-            colorie_tableau(tableau)
-            if gagnant is not None:
-                stop_buttons()
-                afficher_gagnant(gagnant)
-
 
 def clear():
     """
-    efface tous les slaves de la window
+    efface tous les slaves de la window pour clear la fenêtre
     """
     list = window.grid_slaves()
     for l in list:
@@ -252,9 +187,10 @@ def clear():
 
 
 def affiche_menu():
+    """
+    affichage du menu principal
+    """
     clear()
-
-    # Création du titre
     title_label = Label(window, text="Menu", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=1, column=1, columnspan=3, sticky=EW)
 
@@ -278,8 +214,11 @@ def affiche_menu():
 
 
 def affiche_partie_locale():
+    """
+    affichage du menu des parties en local
+    soit jouer sur le même ordi ou jouer contre l'ordinateur
+    """
     clear()
-    # Création du titre
     title_label = Label(window, text="Partie locale", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=1, column=1, columnspan=3, sticky=EW)
 
@@ -300,8 +239,10 @@ def affiche_partie_locale():
 
 
 def affiche_partie_ordi():
+    """
+    affichage du menu des parties contre les ordinateurs
+    """
     clear()
-    # Création du titre
     title_label = Label(window, text="Niveaux de l'ordinateur", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=1, column=1, columnspan=3, sticky=EW)
 
@@ -325,8 +266,11 @@ def affiche_partie_ordi():
 
 
 def affiche_partie_en_ligne():
+    """
+    affichage menu des parties en ligne
+    le joueur a le choix entre créer une partie et en rejoindre une
+    """
     clear()
-    # Création du titre
     title_label = Label(window, text="Partie en ligne", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
     title_label.grid(row=1, column=1, columnspan=3, sticky=EW)
 
@@ -348,8 +292,8 @@ def affiche_partie_en_ligne():
 
 def affiche_creer_en_ligne():
     """
-
-    :return:
+    affichage du menu une fois le serveur créé
+    attends la connection d'un joueur pour la thread pour lancer le jeu
     """
     clear()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
@@ -402,7 +346,8 @@ def rejoindre_partie(ip):
 
 def jeu(lvl):
     """
-    fonction d'affichage du jeu
+    :paramètre lvl (indique si on joue en local, contre l'ordinateur ou en ligne).
+    Fonction d'affichage du jeu
     prend en paramètre lvl pour changer les boutons et/ou les désactiver
     """
     clear()
@@ -420,7 +365,7 @@ def jeu(lvl):
     activate_buttons(lvl)
     if lvl == 5:
         stop_buttons()
-        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_client)
+        thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_online, args=(lvl,))
         thread_attente_adversaire.start()
     window.grid_columnconfigure(1, weight=0)
     window.grid_columnconfigure(2, weight=0)
@@ -467,9 +412,9 @@ def recommencer_partie():
 def designe_joueur():
     """
     Détruit l'ancien 'Tour joueur : '
-    récupère le joueur actuel et re écrit
+    récupère le joueur actuel et recrée le 'Tour joueur : '
     """
-    for l, i in enumerate(window.slaves()):
+    for l, i in enumerate(window.slaves()): # boucle pour détruire 'Tour joueur : '
         if l == 1:
             i.destroy()
             break
