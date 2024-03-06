@@ -9,7 +9,7 @@ data_recue = None
 
 def connect(ip):
     """
-
+    Se connect à l'ip du serveur, Créer une boucle pour le jeu attend de recevoir le coup de l'adversaire puis de jouer
     :param IP de l'host
     :return false
     """
