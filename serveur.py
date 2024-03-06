@@ -47,6 +47,7 @@ def creer_serveur():
                 continu = False             # Fait un double break pour couper la connexion
                 break
             print(f"Message : {data_recue.decode()}")
+            time.sleep(0.05)
             break
         data_recue = None
 

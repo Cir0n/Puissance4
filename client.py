@@ -34,6 +34,7 @@ def connect(ip):
                 continu = False
                 break
             print(f"Message : {data_recue.decode()}")
+            time.sleep(0.05)
             break
         data_recue = None
         while True:

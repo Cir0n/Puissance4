@@ -130,15 +130,13 @@ def on_button_click_online(row, col, lvl):
             envoie_pos_joue_client(col)   # envoie à l'adversaire la pos jouée
         stop_buttons()
         if gagnant is not None:
-            stop_buttons()
             afficher_gagnant(gagnant)
             return
         if lvl == 4:
             thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_online, args=(lvl,))
-            thread_attente_adversaire.start()
         elif lvl == 5:
             thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_online, args=(lvl,))
-            thread_attente_adversaire.start()
+        thread_attente_adversaire.start()
 
 def on_button_click_ordi(row, col, lvl):
     """
