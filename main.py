@@ -5,6 +5,7 @@ from board import *
 from client import *
 from serveur import *
 import threading
+import webbrowser
 
 
 def colorie_tableau(tableau):
@@ -67,7 +68,6 @@ def att_adversaire_joue_online(lvl):
             coup_adversaire = get_data_client()
         if coup_adversaire != None:
             coup_adversaire = int(coup_adversaire.decode())
-            print(coup_adversaire)
             if lvl == 4:
                 activate_buttons(4)
             elif lvl == 5:
@@ -89,7 +89,7 @@ def att_adversaire_joue_online(lvl):
 
 def on_button_click(row, col):
     """
-    paramètres : row et col qui sont la position du boutons dans la liste de boutons
+    Paramètres : row et col qui sont la position du bouton dans la liste de boutons
 
     La fonction permet de faire jouer le joueur quand il clique sur un bouton et vérifie la possibilité de jouer
     """
@@ -109,7 +109,7 @@ def on_button_click(row, col):
 
 def on_button_click_online(row, col, lvl):
     """
-    paramètres : row et col qui sont la position du boutons dans la liste de boutons
+    paramètres : row et col qui sont la position du bouton dans la liste de boutons
     ansi que lvl qui décrit si le joueur est client ou serveur
 
     La fonction permet de faire jouer le joueur quand il clique sur un bouton et vérifie la possibilité de jouer
@@ -132,6 +132,7 @@ def on_button_click_online(row, col, lvl):
         if gagnant is not None:
             stop_buttons()
             afficher_gagnant(gagnant)
+            return
         if lvl == 4:
             thread_attente_adversaire = threading.Thread(target=att_adversaire_joue_online, args=(lvl,))
             thread_attente_adversaire.start()
@@ -141,8 +142,8 @@ def on_button_click_online(row, col, lvl):
 
 def on_button_click_ordi(row, col, lvl):
     """
-    paramètres : row et col qui sont la position du boutons dans la liste de boutons
-    ansi que lvl qui décrit qu'elle ia joue
+    Paramètres : row et col qui sont la position du boutons dans la liste de boutons
+    ansi que lvl qui décrit qu'elle IA joue
 
     La fonction permet de faire jouer le joueur quand il clique sur un bouton et vérifie la possibilité de jouer
     """
@@ -175,7 +176,7 @@ def on_button_click_ordi(row, col, lvl):
 
 def clear():
     """
-    efface tous les slaves de la window pour clear la fenêtre
+    Efface tous les slaves de la window pour clear la fenêtre
     """
     list = window.grid_slaves()
     for l in list:
@@ -190,9 +191,14 @@ def clear():
     window.grid_columnconfigure(3, weight=1)
 
 
+
+def open_regle():
+    webbrowser.open("https://www.regles.com/jeux/puissance-4.html")
+
+
 def affiche_menu():
     """
-    affichage du menu principal
+    Affichage du menu principal
     """
     clear()
     title_label = Label(window, text="Menu", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
@@ -208,7 +214,7 @@ def affiche_menu():
                            font=font_style, width=20, pady=20, bd=0, highlightthickness=0)
     online_button.grid(row=3, column=2, columnspan=1, sticky=EW, pady=15)
 
-    rule_button = Button(window, text="Voir les règles", command=affiche_partie_locale, font=font_style,
+    rule_button = Button(window, text="Voir les règles", command=open_regle, font=font_style,
                          width=20, pady=20, bd=0, highlightthickness=0)
     rule_button.grid(row=4, column=2, columnspan=1, sticky=EW, pady=15)
 
@@ -219,7 +225,7 @@ def affiche_menu():
 
 def affiche_partie_locale():
     """
-    affichage du menu des parties en local
+    Affichage du menu des parties en local
     soit jouer sur le même ordi ou jouer contre l'ordinateur
     """
     clear()
@@ -244,7 +250,7 @@ def affiche_partie_locale():
 
 def affiche_partie_ordi():
     """
-    affichage du menu des parties contre les ordinateurs
+    Affichage du menu des parties contre les ordinateurs
     """
     clear()
     title_label = Label(window, text="Niveaux de l'ordinateur", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
@@ -271,8 +277,8 @@ def affiche_partie_ordi():
 
 def affiche_partie_en_ligne():
     """
-    affichage menu des parties en ligne
-    le joueur a le choix entre créer une partie et en rejoindre une
+    Affichage menu des parties en ligne
+    Le joueur a le choix entre créer une partie et en rejoindre une
     """
     clear()
     title_label = Label(window, text="Partie en ligne", font=("Courier", 48), bg='#7092BE', fg='white', pady=30)
@@ -296,8 +302,8 @@ def affiche_partie_en_ligne():
 
 def affiche_creer_en_ligne():
     """
-    affichage du menu une fois le serveur créé
-    attends la connection d'un joueur pour la thread pour lancer le jeu
+    Affichage du menu une fois le serveur créé
+    Attends la connection d'un joueur pour la thread pour lancer le jeu
     """
     clear()
     title_label = Label(window, text="En attente d'un joueur...", font=("Courrier", 48), bg='#7092BE', fg='white',
@@ -319,7 +325,7 @@ def affiche_creer_en_ligne():
 
 def affiche_rejoindre_partie_en_ligne():
     """
-    affichage du menu pour rejoindre une partie en mettant l'adresse ip de l'host
+    Affichage du menu pour rejoindre une partie en mettant l'adresse ip de l'host
     """
     clear()
     title_label = Label(window, text="Rejoindre une partie", font=("Courrier", 48), bg='#7092BE', fg='white', pady=30)
@@ -436,6 +442,7 @@ window.title("Puissance 4")
 window.iconbitmap("image/puissance4.ico")
 window.geometry("1080x720")
 window.minsize(720, 480)
+window.maxsize(1080, 720)
 window.config(background='#7092BE')
 
 #configuration des colonnes pour les menus
