@@ -437,7 +437,6 @@ def designe_joueur():
 # Configurations de la fenetre puissance 4
 window = Tk()
 window.title("Puissance 4")
-window.iconbitmap("image/puissance4.ico")
 window.geometry("1080x720")
 window.minsize(720, 480)
 window.maxsize(1080, 720)
