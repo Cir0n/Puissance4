@@ -2,3 +2,8 @@ fileignoreconfig:
 - filename: sonar-project.properties
   checksum: 50e9713a482a30f453ac9466121e7357e1612855df9936c04cc633f4b08ed682
 version: ""
+
+fileignoreconfig:
+- filename: Jenkinsfile
+  checksum: 66a7e48fa8e46704e90bcf46f89febec3b5d6adebffd0c5aa00e8a527133ee65
+version: ""
