@@ -9,10 +9,10 @@
 
     <properties>
         <sonar.projectName>Puissance4 Python</sonar.projectName>
+        <sonar.projectKey>puissance4-python</sonar.projectKey>
         <sonar.language>py</sonar.language>
-        <sonar.sources>src</sonar.sources> <!-- Chemin des fichiers sources -->
-        <sonar.tests>tests</sonar.tests>   <!-- Chemin des fichiers de tests -->
-        <sonar.exclusions>**/tests/**</sonar.exclusions> <!-- Exclusion des fichiers de tests des sources -->
+        <sonar.sources>.</sonar.sources> <!-- Sélectionne tous les fichiers Python -->
+        <sonar.inclusions>**/*.py</sonar.inclusions> <!-- Inclut uniquement les fichiers Python -->
     </properties>
 
     <build>
