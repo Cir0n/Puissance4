@@ -25,7 +25,7 @@ pipeline {
                 withSonarQubeEnv("${SONARQUBE_SERVER}") {
                     sh '''
                     mvn sonar:sonar \
-                    -Dsonar.projectKey=Jenkins \
+                    -Dsonar.projectKey=jenkins \
                     -Dsonar.host.url=http://172.20.10.2:9000 \
                     -Dsonar.token=sqa_503f1d3f6931e73dff661ef9b573d2d41082245d
                     '''
