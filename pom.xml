@@ -3,24 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Informations sur le projet -->
     <groupId>com.example</groupId>
     <artifactId>puissance4-python</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- Propriétés -->
     <properties>
         <sonar.projectName>Puissance4 Python</sonar.projectName>
         <sonar.language>py</sonar.language>
-        <sonar.sources>.</sonar.sources> <!-- Inclut tous les fichiers du projet -->
-        <sonar.tests>.</sonar.tests>     <!-- Inclut les tests -->
-        <sonar.python.version>3.x</sonar.python.version> <!-- Remplacez par votre version de Python -->
+        <sonar.sources>src</sonar.sources> <!-- Chemin des fichiers sources -->
+        <sonar.tests>tests</sonar.tests>   <!-- Chemin des fichiers de tests -->
+        <sonar.exclusions>**/tests/**</sonar.exclusions> <!-- Exclusion des fichiers de tests des sources -->
     </properties>
 
-    <!-- Plugins Maven -->
     <build>
         <plugins>
-            <!-- Plugin SonarQube -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
