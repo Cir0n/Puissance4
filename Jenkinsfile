@@ -1,43 +1,21 @@
 pipeline {
     agent any
-    tools {
-        // Nom du scanner configuré dans Manage Jenkins > Global Tool Configuration
-        sonarqube 'SonarScanner'
-    }
     stages {
-        stage("build") {
+        stage('Build') {
             steps {
                 echo 'Building the application'
-                // Ajoutez vos commandes de build ici, par exemple :
-                // sh './gradlew build'
-                // ou mvn clean package
+                // Ajoutez vos commandes de build ici
             }
         }
-        stage("test") {
+        stage('SonarQube Analysis') {
             steps {
-                echo 'Testing the application'
-                // Ajoutez vos commandes de test ici
-            }
-        }
-        stage("SonarQube Analysis") {
-            steps {
-                // Utilisation du scanner SonarQube
-                withSonarQubeEnv('SonarQube') {
-                    echo 'Running SonarQube analysis'
+                withSonarQubeEnv('SonarQube') { // Nom défini dans SonarQube servers
                     sh 'sonar-scanner'
                 }
             }
         }
-        stage("deploy") {
-            steps {
-                echo 'Deploying the application'
-            }
-        }
     }
     post {
-        always {
-            echo 'Pipeline finished.'
-        }
         success {
             echo 'Pipeline succeeded.'
         }
